@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/user_head::userHead"></head>
+
+<body>
+
+<main>
+  <div class="container">
+
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+            <div class="d-flex justify-content-center py-4">
+              <a href="/" class="logo d-flex align-items-center w-auto">
+                <span class="d-none d-lg-block color">Portpolio Manager</span>
+              </a>
+            </div><!-- End Logo -->
+
+            <div class="card mb-3" style="width: 33rem;">
+
+              <div class="card-body">
+
+                <div class="py-0">
+                  <h5 class="card-title text-center pb-0 fs-5 fw-bold">로그인</h5>
+                </div>
+
+                <div th:if="${param.error}" class="form-group">
+                  <span th:text="${exception}" class="alert alert-danger">잘못된 아이디나 암호입니다</span>
+                </div>
+
+                <hr>
+
+                <form th:action="@{/login_proc}" method="post" class="row g-3 needs-validation"
+                      novalidate>
+
+                  <div class="col-12">
+                    <label for="email" class="form-label">이메일</label>
+                    <div class="input-group has-validation">
+                      <input type="email" class="form-control" name="email" id="email"
+                             placeholder="이메일" required="required" autofocus="autofocus">
+                      <div class="invalid-feedback">Please enter your username.</div>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="password" class="form-label">비밀번호</label>
+                    <input type="password" class="form-control" name="password" id="password"
+                           placeholder="비밀번호" required="required">
+                    <div class="invalid-feedback">Please enter your password!</div>
+                  </div>
+
+                  <div class="col-12 pt-3">
+                    <button class="btn btn-primary w-100 py-2" type="submit">Login</button>
+                  </div>
+
+                  <div class="col-12 d-flex justify-content-center">
+                    <p class="small mb-0">계정이 없으신가요? <a th:href="@{/signUp}" class="fw-bold">회원가입
+                      하기</a></p>
+                  </div>
+                </form>
+
+                <div class="striped my-4">
+                  <span class="striped-line"></span>
+                  <span class="striped-text">or</span>
+                  <span class="striped-line"></span>
+                </div>
+                <div class="method">
+                  <div class="method-control">
+                    <a href="/oauth2/authorization/google" class="method-action">
+                      <i class="fa-brands fa-google ion-logo-google me-3"></i>
+                      <span>Sign in with Google</span>
+                    </a>
+                  </div>
+                  <div class="method-control">
+                    <a href="/oauth2/authorization/naver" class="method-action">
+                      <i class="fa-sharp fa-solid fa-n ion-logo-naver me-3"></i>
+                      <span>Sign in with Facebook</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</main><!-- End #main -->
+
+</body>
+
+<style>
+  :root {
+    --color-white: #ffffff;
+    --color-light: #f1f5f9;
+    --color-black: #121212;
+    --color-night: #012970;
+    --color-red: #f44336;
+    --color-grayish: #dadce0;
+    --color-green: #30C75A;
+    --shadow-normal: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .ion-logo-google {
+    font-size: 1.65rem;
+    line-height: inherit;
+    margin-right: 0.5rem;
+    color: var(--color-red);
+  }
+  .ion-logo-naver {
+    font-size: 1.65rem;
+    line-height: inherit;
+    margin-right: 0.5rem;
+    color: var(--color-green);
+  }
+  .striped {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+  }
+  .striped-line {
+    flex: auto;
+    flex-basis: auto;
+    border: none;
+    outline: none;
+    height: 2px;
+    background: var(--color-grayish);
+  }
+  .striped-text {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: inherit;
+    color: var(--color-black);
+    margin: 0 1rem;
+  }
+  .method-control {
+    margin-bottom: 1rem;
+  }
+  .method-action {
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    padding: 0.35rem 1.25rem;
+    outline: none;
+    border: 2px solid var(--color-grayish);
+    border-radius: 2rem;
+    color: var(--color-night);
+    background: var(--color-white);
+    text-transform: capitalize;
+    text-rendering: optimizeLegibility;
+    transition: all 0.35s ease;
+  }
+  .method-action:hover {
+    background: var(--color-light);
+  }
+</style>
+
+</html>

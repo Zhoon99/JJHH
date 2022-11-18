@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/user_head::userHead"></head>
+
+<style>
+    .searchBar {
+        width: 40%;
+        height: 80px;
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .searchBar-input {
+        font-size: 16px;
+        font-weight: 600;
+        width: 100%;
+        border-radius: 50px;
+        border: 3px solid #0067A3;
+        padding: 7px 15px;
+        text-align: left;
+        display: inline;
+        outline: none;
+    }
+</style>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header th:replace="layout/header::header"></header>
+
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex flex-column justify-content-center">
+    <div class="container" data-aos="zoom-in" data-aos-delay="100">
+        <h1>Portfolio Manager</h1>
+        <div class="searchBar">
+            <input class="searchBar-input" type="search" placeholder="클래스 검색하기!" spellcheck="false"/>
+        </div>
+    </div>
+</section><!-- End Hero -->
+
+</body>
+
+<footer th:replace="layout/footer::footer"></footer>
+
+</html>
