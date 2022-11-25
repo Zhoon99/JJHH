@@ -3,6 +3,8 @@ package spring.assignment.jjhh.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,4 +36,20 @@ public class Portfolio extends BaseEntity {
 
     @Column(nullable = false)
     private Integer views;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<File> fileList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<TechStack> techStackList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<Team> teamList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<Comment> commentList = new ArrayList<>();
 }

@@ -26,4 +26,12 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private Integer depth;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "portfolio_id")
+    private Portfolio portfolio;
+
 }

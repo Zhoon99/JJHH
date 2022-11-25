@@ -1,10 +1,6 @@
 package spring.assignment.jjhh.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,6 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import spring.assignment.jjhh.dto.AccountDto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -46,6 +45,12 @@ public class Account {
 	
 	@Column(length = 30)
 	private String provider;
+
+	@OneToMany(mappedBy = "account")
+	private List<Portfolio> portfolioList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "account")
+	private List<Comment> commentList = new ArrayList<>();
 	
 	public static Account createAccount(AccountDto dto, PasswordEncoder passwordEncoder) {
 		Account account = new Account();
