@@ -24,15 +24,10 @@ public class LoginController {
     @Autowired
 	private AccountRepository accountRepository;
 	
-	@GetMapping(value = "/login")
-	public String login() {
-		return "login/loginForm";
-	}
-	
 	@GetMapping("/login/error") 
     public String loginError(Model model) {
-        model.addAttribute("loginErrorMsg", "아이디 또는 패스워드를 다시 확인하세요.");
-        return "login/loginForm";  
+       model.addAttribute("exception", "아이디 또는 패스워드를 다시 확인하세요.");
+        return "login";  
     }
 	
 	@GetMapping("/new")  
