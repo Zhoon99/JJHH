@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="layout/user_head::userHead"></head>
+<title>로그인 페이지</title>
+<body>
+
+<!-- ======= Header ======= -->
+<header th:replace="layout/header::header"></header>
+
+<style>
+.error {
+	color: #bd2130;
+}
+</style>
+
+<div class="container">
+<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+<div class="container">
+
+<h1>로그인페이지</h1>
+<form action="/new" method="post">
+	이름  
+	<input type="text" name="nick" /> <br/> 
+	비번 
+	<input type="password" name="password" /> <br/>
+	이메일
+  	<input type="email" name="email" /> <br/>
+	<button>회원가입</button> 
+	
+</form>
+</div>
+</section>
+</div>
+</body>
+<footer th:replace="layout/footer::footer"></footer>
+</html>
