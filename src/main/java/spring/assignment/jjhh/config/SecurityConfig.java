@@ -47,19 +47,8 @@ public class SecurityConfig {
     		.userService(principalOauth2UserService);
         
 		http.authorizeRequests()
-<<<<<<<<< Temporary merge branch 1
 		.antMatchers("/","/home").authenticated()
-		.mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
 		.antMatchers("/log","/login/**","layout/**").permitAll();
-=========
-				.anyRequest().permitAll();
-//		.antMatchers("/","/home").authenticated()
-//		.antMatchers("/log","/login/**").permitAll();
->>>>>>>>> Temporary merge branch 2
-//		.antMatchers("/log").authenticated();
-////		.anyRequest().authenticated(); // 그 외 모든 요청에 대해 인증 필요
-//		.antMatchers("/log").permitAll();
-////		.anyRequest().permitAll();
 		
         return http.build();
     }
