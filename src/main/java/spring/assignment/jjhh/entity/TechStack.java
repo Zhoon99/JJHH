@@ -20,4 +20,8 @@ public class TechStack {
     @Column(length = 30, nullable = false)
     private String techName;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "portfolio_id")
+    private Portfolio portfolio;
+
 }

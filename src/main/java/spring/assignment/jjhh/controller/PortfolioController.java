@@ -8,20 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class HomeController {
+public class PortfolioController {
 
-    @GetMapping("/")
-    public String home() {
-        return "home";
+    @GetMapping("/user/portfolio/register")
+    public String register() {
+        return "portfolio/portfolio_register";
     }
 
-    @GetMapping("/index")
-    public String index() {
-        return "index";
-    }
-
-    @GetMapping("/signUp")
-    public String signUp() {
-        return "sign_up";
-    }
 }

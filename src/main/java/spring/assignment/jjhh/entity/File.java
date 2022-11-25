@@ -26,4 +26,8 @@ public class File {
     @Column(length = 100, nullable = false)
     private String fileName;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "portfolio_id")
+    private Portfolio portfolio;
+
 }
