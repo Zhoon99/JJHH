@@ -6,11 +6,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import spring.assignment.jjhh.dto.AccountDto;
 
 @Entity
 @Getter
@@ -29,6 +33,8 @@ public class Account {
 	
 	private String password;
 	
+	private String nick;
+	
 	private String profile_img;
 	
 	private String profile_thumb;
@@ -40,4 +46,25 @@ public class Account {
 	
 	@Column(length = 30)
 	private String provider;
+	
+	public static Account createAccount(AccountDto dto, PasswordEncoder passwordEncoder) {
+		Account account = new Account();
+		account.setEmail(dto.getEmail());
+		account.setNick(dto.getNick());
+        String password = passwordEncoder.encode(dto.getPassword());
+        account.setPassword(password);
+        return account;
+	}
+	
+	@Builder
+    public Account(String email, String password,String nick, String profile_img, String profile_thumb, String introduce, String provider_id, String provider) {
+		this.email = email;
+		this.password = password;
+		this.nick = nick;
+		this.profile_img = profile_img;
+		this.profile_thumb = profile_thumb;
+		this.introduce = introduce;
+		this.provider_id = provider_id;
+		this.provider = provider;
+	}
 }
