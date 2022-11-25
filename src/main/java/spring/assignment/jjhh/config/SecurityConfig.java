@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,11 +18,6 @@ public class SecurityConfig {
 	
 	@Autowired
 	private PrincipalOauth2UserService principalOauth2UserService;
-
-	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().antMatchers("/assets/**", "/favicon.ico", "/resources/**", "/error");
-	}
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -47,9 +41,8 @@ public class SecurityConfig {
     		.userService(principalOauth2UserService);
         
 		http.authorizeRequests()
-				.anyRequest().permitAll();
-//		.antMatchers("/","/home").authenticated()
-//		.antMatchers("/log","/login/**").permitAll();
+		.antMatchers("/","/home").authenticated()
+		.antMatchers("/log","/login/**").permitAll();
 //		.antMatchers("/log").authenticated();
 ////		.anyRequest().authenticated(); // 그 외 모든 요청에 대해 인증 필요
 //		.antMatchers("/log").permitAll();
