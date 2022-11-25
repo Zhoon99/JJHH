@@ -19,9 +19,13 @@ public class HomeController {
     public String index() {
         return "index";
     }
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 
-//    @GetMapping("/login")
-//    public String login() {
-//        return "login";
-//    }
+    @GetMapping("/signUp")
+    public String signUp() {
+        return "sign_up";
+    }
 }
