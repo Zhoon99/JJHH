@@ -47,9 +47,8 @@ public class SecurityConfig {
     		.userService(principalOauth2UserService);
         
 		http.authorizeRequests()
-				.anyRequest().permitAll();
-//		.antMatchers("/","/home").authenticated()
-//		.antMatchers("/log","/login/**").permitAll();
+		.antMatchers("/","/home").authenticated()
+		.antMatchers("/log","/login/**","layout/**").permitAll();
 //		.antMatchers("/log").authenticated();
 ////		.anyRequest().authenticated(); // 그 외 모든 요청에 대해 인증 필요
 //		.antMatchers("/log").permitAll();
