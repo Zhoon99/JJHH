@@ -23,6 +23,11 @@ public class LoginController {
     
     @Autowired
 	private AccountRepository accountRepository;
+    
+    @GetMapping("/login")
+    public String index() {
+        return "login";
+    }
 	
 	@GetMapping("/login/error") 
     public String loginError(Model model) {
