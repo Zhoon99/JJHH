@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"portfolioList", "commentList"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
