@@ -195,8 +195,7 @@
                                         <thead>
                                         <tr>
                                             <td width="30%">팀원</td>
-                                            <td rowspan="2">역할</td>
-                                            <td></td>
+                                            <td>역할</td>
                                         </tr>
                                         </thead>
                                         <tbody id="memberRole-result">
@@ -220,9 +219,7 @@
                                                 "</td>" +
                                                 "<td>" +
                                                 "<textarea class=\"none-border form-control role\" placeholder=\"250자 이내로 입력해주세요\" name=\"role\" maxlength=\"250\" required></textarea>" +
-                                                "<td width=\"5%\">" +
-                                                "<i class=\"bi bi-x-lg d-flex justify-content-center fw-bold\" style=\"cursor:pointer;\" onclick=\"removeMemberRole(this)\"></i>" +
-                                                "</td>" +
+                                                "<i class=\"bi bi-x-lg d-flex justify-content-end fw-bold\" style=\"display:inline; cursor:pointer; z-index: 1;\" onclick=\"removeMemberRole(this)\"></i>" +
                                                 "</tr>";
                                             result.insertAdjacentHTML("beforeend", html);
 
@@ -368,8 +365,8 @@
                         techStack.push(input.val());
                     });
 
-                    $('#memberRole-result').each(function (index) {
-                        //var
+                    $('#memberRole-result tr:last td').each(function (index) {
+                        alert("123");
                     });
                 }
             </script>
