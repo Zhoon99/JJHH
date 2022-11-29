@@ -25,8 +25,11 @@ public class Portfolio extends BaseEntity {
     @Column(nullable = false)
     private String introduce;
 
-    @Column(length = 50, nullable = false)
-    private String duration;
+    @Column(length = 10, nullable = false)
+    private String startDate;
+
+    @Column(length = 10, nullable = false)
+    private String lastDate;
 
     @Lob
     private String readme;
