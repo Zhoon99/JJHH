@@ -14,11 +14,29 @@
         border: 4px solid #012567;
     }
 
-    .checkbox_week input[type="checkbox"] {
+    table {
+        width: 100%;
+        border: 1px solid #012567;
+        border-collapse: collapse;
+    }
+
+    thead {
+        font-weight: bold;
+        color: #fff;
+        background: #012567;
+    }
+
+    th, td {
+        border: 1px solid #012567;
+        padding: 2px 10px;
+    }
+
+    .check_disclosure input[type="radio"] {
         display: none;
     }
 
-    .checkbox_week input[type="checkbox"] + span {
+    .check_disclosure input[type="radio"] + span {
+        width: 100px;
         display: inline-block;
         padding: 15px 10px;
         border: 1px solid #dfdfdf;
@@ -27,8 +45,9 @@
         cursor: pointer;
     }
 
-    .checkbox_week input[type="checkbox"]:checked + span {
-        background-color: #012567;
+    .check_disclosure input[type="radio"]:checked + span {
+        width: 100px;
+        background-color: #113a6b;
         color: #ffffff;
     }
 
@@ -36,95 +55,15 @@
         min-height: 250px;
     }
 
-    table {
-        border-spacing: 0 30px;
-        border-collapse: separate;
-        font-size: 17px;
-        font-weight: bold;
+    .none-border {
+        border: 0;
+        height: 20px;
     }
 
-    .address-btn {
-        background-color: #012567;
-        color: #ffffff;
-        font-weight: bold;
-    }
-
-    .prev-arrow {
-        display: inline;
-        font-size: 100px;
-        color: #012567;
-        position: absolute;
-        top: 50%;
-        left: -6%;
-        z-index: 1;
-        cursor: pointer
-    }
-
-    .next-arrow {
-        display: inline-block;
-        font-size: 100px;
-        color: #012567;
-        position: absolute;
-        top: 50%;
-        right: -6%;
-        z-index: 1;
-        cursor: pointer;
-    }
-
-    .prev-arrow.slick-disabled:before,
-    .next-arrow.slick-disabled:before {
-        opacity: .25;
-        cursor: default;
-    }
-
-    .schedule-bolder {
-        border: 2px solid #012567;
-        border-radius: 10px;
-        padding: 20px 30px;
-    }
-
-    #schedule-table {
-        border-collapse: collapse;
-        table-layout: fixed;
-        width: 100%;
-        text-align: left;
-        font-size: 14px;
-        line-height: 0.8;
-        border: 2px solid #ccc;
-        margin-top: 20px;
-    }
-
-    #schedule-table thead {
-        border-right: 2px solid #ccc;
-        border-left: 2px solid #ccc;
-        background: #012567;
-    }
-
-    #schedule-table thead th {
-        padding: 10px;
-        font-weight: bold;
-        vertical-align: top;
-        color: #fff;
-    }
-
-    #schedule-table td {
-        padding: 10px;
-        vertical-align: top;
-        border-bottom: 2px solid #ccc;
+    .none-border input:focus {
+        outline: none;
     }
 </style>
-
-<script>
-    $(document).ready(function () {
-        $(".reg-split").slick({
-            dots: true,
-            infinite: false,
-            draggable: false,
-            prevArrow: '<i class="prev-arrow bi bi-chevron-compact-left"></i>',
-            nextArrow: '<i class="next-arrow bi bi-chevron-compact-right"></i>'
-        });
-    });
-</script>
 
 <body>
 
@@ -140,9 +79,9 @@
                         <h5 class="card-title">포트폴리오 등록</h5>
 
                         <div class="row mb-3">
-                            <label for="className" class="col-sm-2 col-form-label">포트폴리오 명</label>
+                            <label for="projectName" class="col-sm-2 col-form-label">포트폴리오 명</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="className" id="className"
+                                <input type="text" class="form-control" name="projectName" id="projectName"
                                        placeholder="포트폴리오 명" required>
                             </div>
                         </div>
@@ -150,24 +89,24 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label d-flex align-items-center">한 줄 소개</label>
                             <div class="col-sm-10">
-                                <div class="materialLengthWrap d-flex justify-content-end">
-                                    <span class="materialTextCount">0자</span>
-                                    <span class="materialTextTotal">/150자</span>
+                                <div class="introduceLengthWrap d-flex justify-content-end">
+                                    <span class="introduceTextCount">0자</span>
+                                    <span class="introduceTextTotal">/150자</span>
                                 </div>
-                                <textarea class="form-control" placeholder="150자 이내로 입력해주세요" name="material"
-                                          id="material"
+                                <textarea class="form-control" placeholder="150자 이내로 입력해주세요" name="introduce"
+                                          id="introduce"
                                           maxlength="150" style="height: 100px; resize: none;"
                                           required></textarea>
 
                                 <script>
-                                    $('#material').keyup(function (e) {
+                                    $('#introduce').keyup(function (e) {
                                         let content = $(this).val();
 
                                         // 글자수 세기
                                         if (content.length == 0 || content == '') {
-                                            $('.materialTextCount').text('0자');
+                                            $('.introduceTextCount').text('0자');
                                         } else {
-                                            $('.materialTextCount').text(content.length + '자');
+                                            $('.introduceTextCount').text(content.length + '자');
                                         }
 
                                         // 글자수 제한
@@ -177,7 +116,6 @@
                                             // 200자 넘으면 알림창 뜨도록
                                             alert('150자까지 입력 가능합니다.');
                                         }
-                                        ;
                                     });
                                 </script>
                             </div>
@@ -195,42 +133,115 @@
                                         <input type="date" class="form-control" name="lastDate"
                                                id="lastDate" required>
                                     </div>
+
+                                    <script>
+                                        function setLastDate() {
+                                            if (document.getElementById('lastDate').value == "") {
+                                                document.getElementById('lastDate').value = document.getElementById('startDate').value;
+                                            }
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
 
-                        <form id="curriculumForm">
+                        <hr>
+
+                        <form id="techStackForm">
+                            <div class="row d-flex align-items-start mb-3">
+                                <label class="col-sm-2 control-label">기술 스택</label>
+                                <div class="col-sm-10">
+
+                                    <div class="row row-cols-3" id="techStack-result">
+                                    </div>
+
+                                    <label class="d-flex justify-content-center align-items-end">
+                                        <div class="fw-bold" style="cursor:pointer;" onclick="insertTech()">
+                                            기술 스택 추가 ▼
+                                        </div>
+                                    </label>
+
+                                    <script>
+                                        function insertTech() {
+                                            const result = document.getElementById('techStack-result');
+
+                                            let html = "";
+                                            html += "<div class=\"col\">" +
+                                                "<i class=\"bi bi-x-lg d-flex justify-content-end\" style=\"cursor:pointer;\" onclick=\"removeTech(this)\"></i>" +
+                                                "<input type='text' class='form-control' name=\"techStack\">" +
+                                                "</div>"
+                                            result.insertAdjacentHTML("beforeend", html);
+                                        }
+
+                                        function removeTech(element) {
+                                            const result = document.getElementById('techStack-result');
+                                            const row = element.parentNode;
+
+                                            result.removeChild(row);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </form>
+
+                        <hr>
+
+                        <form id="memberRoleForm">
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label mt-4">커리큘럼</label>
                                 <div class="col-sm-10">
 
-                                    <table style="width: 100%;">
-                                        <tbody id="addTable">
+                                    <table>
+                                        <thead>
                                         <tr>
-                                            <td width="4%" class="fs-3 pt-4">
-                                                <span>1.</span>
-                                                <input type="hidden" name="curOrder" value="1">
-                                            </td>
-                                            <td colspan='2'>
-                                                <p class="mb-1">타이틀</p>
-                                                <input type='text' class='form-control' name="curTitle"
-                                                       placeholder='30자까지 입력가능합니다.'>
-
-                                                <p class="mb-1 mt-2">내용</p>
-                                                <input type='text' class='form-control' name="curContent"
-                                                       placeholder='50자까지 입력가능합니다.'>
-                                            </td>
+                                            <td width="30%">팀원</td>
+                                            <td rowspan="2">역할</td>
+                                            <td></td>
                                         </tr>
+                                        </thead>
+                                        <tbody id="memberRole-result">
                                         </tbody>
                                     </table>
                                     <label class="d-flex justify-content-center">
-                                        <div class="fw-bold" style="cursor:pointer;" onclick="insertRow()">
-                                            추가하기 ▼
+                                        <div class="fw-bold" style="cursor:pointer;" onclick="insertMemberRole()">
+                                            커리큘럼 추가 ▼
                                         </div>
                                     </label>
+
+                                    <script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
+                                    <script>
+                                        function insertMemberRole() {
+                                            const result = document.getElementById('memberRole-result');
+
+                                            let html = "";
+                                            html += "<tr>" +
+                                                "<td width=\"30%\">" +
+                                                "<input class='none-border form-control' type='text' placeholder=\"팀 원\" name=\"memberName\">" +
+                                                "</td>" +
+                                                "<td>" +
+                                                "<textarea class=\"none-border form-control role\" placeholder=\"250자 이내로 입력해주세요\" name=\"role\" maxlength=\"250\" required></textarea>" +
+                                                "<td width=\"5%\">" +
+                                                "<i class=\"bi bi-x-lg d-flex justify-content-center fw-bold\" style=\"cursor:pointer;\" onclick=\"removeMemberRole(this)\"></i>" +
+                                                "</td>" +
+                                                "</tr>";
+                                            result.insertAdjacentHTML("beforeend", html);
+
+                                            autosize($(".role"));
+                                        }
+
+                                        function removeMemberRole(element) {
+                                            const result = document.getElementById('memberRole-result');
+                                            const tr = element.parentNode.parentNode;
+
+                                            result.removeChild(tr);
+                                        }
+                                    </script>
+
                                 </div>
                             </div>
                         </form>
+
+                        <hr>
 
                         <div class="row mb-3">
                             <label for="ckeditor" class="col-sm-2 col-form-label">readme</label>
@@ -261,274 +272,104 @@
                             </div>
                         </div>
 
-                    </div> <!-- page-1 end -->
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label mt-2">공개 여부</label>
+                            <div class="col-sm-10">
+                                <label class="check_disclosure">
+                                    <input type="radio" name="disclosure" value="공개" checked>
+                                    <span>공개</span>
+                                </label>
+                                <label class="check_disclosure">
+                                    <input type="radio" name="disclosure" value="비공개">
+                                    <span>비공개</span>
+                                </label>
+                            </div>
+                        </div>
 
-                    <div class="page-2 px-1">
-                    </div> <!-- page-2 end -->
-
-                    <div class="page-3 px-1">
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label d-flex align-items-center">활동 사진</label>
                             <div class="col-sm-10">
                                 <div style="display:inline;">
-                                    <label for="activityImg">
-                                        <img src="/images/common/add_img.png"
-                                             style="width:100px; height:100px; cursor: pointer;">
-                                    </label>
+<!--                                    <label for="activityImg">-->
+<!--                                        <img src="/images/common/add_img.png"-->
+<!--                                             style="width:100px; height:100px; cursor: pointer;">-->
+<!--                                    </label>-->
                                     <form id="addForm" method="post" enctype="multipart/form-data">
                                         <input type="file" id="activityImg" name="activityImg[]"
-                                               onchange="atvPreviewImage(this,'atv_img_preview')"
-                                               style="display: none;" multiple="true">
+                                               onchange="atvPreviewImage(this,'atv_img_preview')" multiple="true">
                                     </form>
                                     <span id='atv_img_preview'></span>
                                 </div>
 
                                 <script>
-                                    var fileArr;
-                                    var fileInfoArr = [];
-
-                                    //썸네일 클릭시 삭제.
-                                    function atvFileRemove(index) {
-                                        fileInfoArr.splice(index, 1);
-                                        $("#img_id_" + index).remove();
-                                    }
-
-                                    //썸네일 미리보기.
-                                    function atvPreviewImage(targetObj, previewId) {
-                                        var files = targetObj.files;
-                                        fileArr = Array.prototype.slice.call(files);
-
-                                        var preview = document.getElementById(previewId); //div id
-                                        var ua = window.navigator.userAgent;
-
-                                        //ie일때(IE8 이하에서만 작동)
-                                        if (ua.indexOf("MSIE") > -1) {
-                                            targetObj.select();
-                                            try {
-                                                var src = document.selection.createRange().text; // get file full path(IE9, IE10에서 사용 불가)
-                                                var ie_preview_error = document.getElementById("ie_preview_error_" + previewId);
-
-
-                                                if (ie_preview_error) {
-                                                    preview.removeChild(ie_preview_error); //error가 있으면 delete
-                                                }
-
-                                                var img = document.getElementById(previewId); //이미지가 뿌려질 곳
-
-                                                //이미지 로딩, sizingMethod는 div에 맞춰서 사이즈를 자동조절 하는 역할
-                                                img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "', sizingMethod='scale')";
-                                            } catch (e) {
-                                                if (!document.getElementById("ie_preview_error_" + previewId)) {
-                                                    var info = document.createElement("<p>");
-                                                    info.id = "ie_preview_error_" + previewId;
-                                                    info.innerHTML = e.name;
-                                                    preview.insertBefore(info, null);
-                                                }
-                                            }
-                                            //ie가 아닐때(크롬, 사파리, FF)
-                                        } else {
-                                            var files = targetObj.files;
-
-                                            for (var i = 0; i < files.length; i++) {
-                                                var file = files[i];
-                                                fileInfoArr.push(file);
-
-                                                var imageType = /image.*/; //이미지 파일일경우만.. 뿌려준다.
-                                                if (!file.type.match(imageType))
-                                                    continue;
-
-                                                var span = document.createElement('span');
-                                                span.id = "img_id_" + i;
-                                                span.style.width = '100px';
-                                                span.style.height = '100px';
-                                                span.style.display = 'inline-block';
-                                                span.style.backgroundColor = '#cccccc';
-                                                span.style.textAlign = 'center';
-                                                span.style.marginRight = '10px';
-                                                preview.appendChild(span);
-
-                                                var img = document.createElement("img");
-                                                img.className = "addImg";
-                                                img.classList.add("obj");
-                                                img.file = file;
-                                                img.style.width = 'inherit';
-                                                img.style.height = 'inherit';
-                                                img.style.cursor = 'pointer';
-                                                const idx = i;
-                                                img.onclick = () => atvFileRemove(idx);//이미지를 클릭했을 때.
-                                                span.appendChild(img);
-
-                                                if (window.FileReader) { // FireFox, Chrome, Opera 확인.
-                                                    var reader = new FileReader();
-                                                    reader.onloadend = (function (aImg) {
-                                                        return function (e) {
-                                                            aImg.src = e.target.result;
-                                                        };
-                                                    })(img);
-                                                    reader.readAsDataURL(file);
-                                                } else { // safari is not supported FileReader
-                                                    if (!document.getElementById("sfr_preview_error_" + previewId)) {
-                                                        var info = document.createElement("p");
-                                                        info.id = "sfr_preview_error_" + previewId;
-                                                        info.innerHTML = "not supported FileReader";
-                                                        preview.insertBefore(info, null);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    // var fileArr;
+                                    // var fileInfoArr = [];
+                                    //
+                                    // //썸네일 클릭시 삭제.
+                                    // function atvFileRemove(index) {
+                                    //     fileInfoArr.splice(index, 1);
+                                    //     $("#img_id_" + index).remove();
+                                    // }
+                                    //
+                                    // //썸네일 미리보기.
+                                    // function atvPreviewImage(targetObj, previewId) {
+                                    //     var files = targetObj.files;
+                                    //     fileArr = Array.prototype.slice.call(files);
+                                    //
+                                    //     var preview = document.getElementById(previewId); //div id
+                                    //
+                                    //     var files = targetObj.files;
+                                    //
+                                    //     for (var i = 0; i < files.length; i++) {
+                                    //         var file = files[i];
+                                    //         fileInfoArr.push(file);
+                                    //
+                                    //         var span = document.createElement('span');
+                                    //         span.id = "img_id_" + i;
+                                    //         span.style.width = '100px';
+                                    //         span.style.height = '100px';
+                                    //         span.style.display = 'inline-block';
+                                    //         span.style.backgroundColor = '#cccccc';
+                                    //         span.style.textAlign = 'center';
+                                    //         span.style.marginRight = '10px';
+                                    //         preview.appendChild(span);
+                                    //
+                                    //         var img = document.createElement("img");
+                                    //         img.className = "addImg";
+                                    //         img.classList.add("obj");
+                                    //         img.file = file;
+                                    //         img.style.width = 'inherit';
+                                    //         img.style.height = 'inherit';
+                                    //         img.style.cursor = 'pointer';
+                                    //         const idx = i;
+                                    //         img.onclick = () => atvFileRemove(idx);//이미지를 클릭했을 때.
+                                    //         span.appendChild(img);
+                                    //
+                                    //     }
+                                    // }
                                 </script>
                             </div>
                         </div>
 
-                        <script>
-                            //Row 추가
-                            function insertRow() {
-                                var table = document.getElementById('addTable');
+                        <button type="button" class="btn btn-dark btn-lg px-5 ml-5" onclick="dataSubmit()">
+                            등록하기
+                        </button>
 
-                                var html = "";
-                                html +=
-                                    "<tr>" +
-                                    "<td width=\"4%\" class=\"fs-3 pt-4\">" +
-                                    "<span>1.</span>" +
-                                    "<input type=\"hidden\" name=\"curOrder\" value=\"1\">" +
-                                    "</td>" +
-                                    "<td>" +
-                                    "<p class=\"mb-1\">타이틀</p>" +
-                                    "<input type='text' class='form-control' name=\"curTitle\" placeholder='30자까지 입력가능합니다.'>" +
-                                    "<p class=\"mb-1 mt-2\">내용</p>" +
-                                    "<input type='text' class='form-control' name=\"curContent\" placeholder='50자까지 입력가능합니다.'>" +
-                                    "</td>" +
-                                    "<td width=\"4%\" style=\"text-align: right; font-size: 70px;\">" +
-                                    "<button type=\"button\" class=\"btn-close mt-4\" onclick=\"removeRow(this)\"></button>" +
-                                    "</td>" +
-                                    "</tr>";
-                                table.insertAdjacentHTML("beforeend", html);
-                                reloadIndex();
-                                window.scrollTo(0, document.body.scrollHeight);
-                            }
-
-                            //Row 삭제
-                            function removeRow(element) {
-                                var table = document.getElementById('addTable');
-
-                                var td = element.parentNode;
-                                var tr = td.parentNode;
-
-                                table.removeChild(tr);
-                                reloadIndex();
-                            }
-
-                            //인덱스 재설정
-                            function reloadIndex() {
-                                var table = document.getElementById('addTable');
-                                var tableRowLength = table.rows.length; // Row 개수
-                                var cells;
-                                var html = "";
-
-                                for (var i = 1; i < tableRowLength; i++) {
-                                    html = "";
-                                    cells = table.rows[i].cells;
-
-                                    html += "<span>" + (table.rows[i].rowIndex + 1) + ".</span>";
-                                    html += "<input type='hidden' name='curOrder' value=" + (table.rows[i].rowIndex + 1) + ">";
-
-                                    cells[0].innerHTML = html;
-                                }
-                            }
-                        </script>
-
-                        <div class="col-12 d-flex justify-content-center">
-                            <button type="button" class="btn btn-dark btn-lg px-5" onclick="history.back()">돌아가기
-                            </button>
-                            <button type="button" class="btn btn-dark btn-lg px-5 ml-5" onclick="dataSubmit()">
-                                가입하기
-                            </button>
-                        </div>
-                    </div> <!-- page-3 end -->
+                    </div>
 
                 </div>
             </div> <!-- card-body end -->
 
             <script>
                 function dataSubmit() {
-                    var repImg = $("#repImg")[0].files[0];
-
-                    var curriculum = {
-                        sequence: 0,
-                        title: '',
-                        content: ''
-                    }
-                    var curList = [];
-
-                    $('#curriculumForm input').each(function (index) {
+                    let techStack = [];
+                    $('#techStackForm input').each(function (index) {
                         var input = $(this);
-                        switch (input.attr('name')) {
-                            case 'curOrder':
-                                curriculum.sequence = input.val();
-                                break;
-                            case 'curTitle':
-                                curriculum.title = input.val();
-                                break;
-                            case 'curContent':
-                                curriculum.content = input.val();
-                                break;
-                        }
-                        if (index % 3 == 2) { //3개씩 끊기
-                            curList.push(curriculum);
-                            curriculum = {
-                                sequence: 0,
-                                title: '',
-                                content: ''
-                            }
-                        }
+                        techStack.push(input.val());
                     });
 
-                    var classData = {
-                        className: $('#className').val(),
-                        categoryId: $('#categoryId').val(),
-                        classIntro: editor.getData(),
-                        address: $('#address').val(),
-                        addressDetail: $('#addressDetail').val(),
-                        lat: $('#lat').val(),
-                        lng: $('#lng').val(),
-                        timeRequired: $('#timeRequired_hour').val() + "시간 " + $('#timeRequired_minutes').val() + "분",
-                        personnel: $('#minPersonnel').val() + "~" + $('#maxPersonnel').val() + "명",
-                        price: $('#price').val(),
-                        material: $('#material').val(),
-                        precautions: $('#precautions').val(),
-                        curriculumList: curList
-                    };
-
-                    const scheduleData = {
-                        scheduleList: scheduleList
-                    }
-
-                    var formData = new FormData();
-
-                    var totalfiles = document.getElementById('activityImg').files.length;
-                    for (var index = 0; index < totalfiles; index++) {
-                        formData.append("activityImg", document.getElementById('activityImg').files[index]);
-                    }
-                    formData.append("repImg", repImg);
-                    formData.append("class", new Blob([JSON.stringify(classData)], {type: "application/json"}));
-                    formData.append("schedule", new Blob([JSON.stringify(scheduleData)], {type: "application/json"}));
-
-                    $.ajax({
-                        url: "/user/class/register",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        enctype: 'multipart/form-data',
-                        type: "POST",
-                        success: function () {
-                            window.location = "/";
-                            alert("클래스 등록에 성공했습니다.");
-                        },
-                        error: function () {
-                            window.location = "/user/class/register";
-                            alert("클래스 등록에 실패했습니다.");
-                        }
+                    $('#memberRole-result').each(function (index) {
+                        //var
                     });
                 }
             </script>
@@ -536,9 +377,6 @@
         </div>
     </section>
 </main><!-- End #main -->
-
-<!-- ======= Footer ======= -->
-<footer th:replace="layout/footer::footer"></footer>
 
 </body>
 
