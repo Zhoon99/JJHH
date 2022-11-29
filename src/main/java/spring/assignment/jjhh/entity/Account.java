@@ -25,7 +25,8 @@ public class Account {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long account_id;
+	@Column(name = "account_id")
+	private Long accountId;
 	
 	@Column(length = 50)
 	private String email;
@@ -34,14 +35,17 @@ public class Account {
 	
 	private String nick;
 	
-	private String profile_img;
+	@Column(name = "profile_img")
+	private String profileImg;
 	
-	private String profile_thumb;
+	@Column(name = "profile_thumb")
+	private String profileThumb;
 	
 	@Column(columnDefinition = "TEXT")
 	private String introduce;
 	
-	private String provider_id;
+	@Column(name = "provider_id")
+	private String providerId;
 	
 	@Column(length = 100)
 	private String provider;
@@ -61,15 +65,22 @@ public class Account {
         return account;
 	}
 	
+	public void updateAccount(AccountDto dto) {
+		this.nick = dto.getNick();
+		this.password = dto.getPassword();
+//		this.profileImg = dto.getProfile_img();
+		this.introduce = dto.getIntroduce();
+	}
+		
 	@Builder
     public Account(String email, String password,String nick, String profile_img, String profile_thumb, String introduce, String provider_id, String provider) {
 		this.email = email;
 		this.password = password;
 		this.nick = nick;
-		this.profile_img = profile_img;
-		this.profile_thumb = profile_thumb;
+		this.profileImg = profile_img;
+		this.profileThumb = profile_thumb;
 		this.introduce = introduce;
-		this.provider_id = provider_id;
+		this.providerId = provider_id;
 		this.provider = provider;
 	}
 }

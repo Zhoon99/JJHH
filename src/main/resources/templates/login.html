@@ -26,11 +26,11 @@
                 <div class="py-0">
                   <h5 class="card-title text-center pb-0 fs-5 fw-bold">로그인</h5>
                 </div>
-
+<!-- 
                 <div th:if="${param.error}" class="form-group">
                   <span th:text="${exception}" class="alert alert-danger">잘못된 아이디나 암호입니다</span>
                 </div>
-
+ -->
                 <hr>
 
                 <form th:action="@{/login/log}" method="post" class="row g-3 needs-validation"
@@ -75,13 +75,13 @@
                     </a>
                   </div>
                   <div class="method-control">
-                    <a href="/oauth2/authorization/naver" class="method-action">
+                    <a href="/oauth2/authorization/github" class="method-action">
                       <i class="fa-sharp fa-solid fa-n ion-logo-naver me-3"></i>
-                      <span>Sign in with Facebook</span>
+                      <span>Sign in with Github</span>
                     </a>
                   </div>
                 </div>
-              </div>
+              </div> 
             </div>
 
           </div>
