@@ -43,7 +43,7 @@ public class Account {
 	
 	private String provider_id;
 	
-	@Column(length = 30)
+	@Column(length = 100)
 	private String provider;
 
 	@OneToMany(mappedBy = "account")
