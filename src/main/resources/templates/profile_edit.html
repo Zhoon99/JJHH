@@ -1,0 +1,217 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="layout/user_head::userHead"></head>
+
+<style>
+  .check_interest input[type="checkbox"] {
+    display: none;
+  }
+
+  .check_interest input[type="checkbox"] + span {
+    display: inline-block;
+    padding: 15px 10px;
+    border: 1px solid #dfdfdf;
+    background-color: #ffffff;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .check_interest input[type="checkbox"]:checked + span {
+    background-color: #113a6b;
+    color: #ffffff;
+  }
+</style>
+
+<body>
+
+<main>
+  <div class="container">
+
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+            <div class="d-flex justify-content-center py-4">
+              <a href="/" class="logo d-flex align-items-center w-auto">
+                <span class="d-none d-lg-block">HobbyBuddy</span>
+              </a>
+            </div><!-- End Logo -->
+
+            <div class="card mb-3" style="width: 40rem;">
+
+              <div class="card-body">
+
+                <div class="py-0">
+                  <h5 class="card-title text-center pb-0 fs-5 fw-bold">프로필 수정</h5>
+                </div>
+
+                <hr>
+
+                <form class="row g-3 needs-validation" action="/user/profile/edit" method="post" novalidate>
+
+                  <div class="col-12">
+                    <label for="email" class="form-label">닉네임</label>
+                    <input type="email" class="form-control" name="email" id="email"
+                           th:placeholder="${account.nick}"
+                           required>
+                    <div class="invalid-feedback">닉네임을 입력해주세요!</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="password" class="form-label">현재 비밀번호</label>
+                    <input type="password" class="form-control" name="password" id="password"
+                           placeholder="Password" data-minlength="6" required>
+                    <div class="invalid-feedback">현재 비밀번호를 입력해주세요!</div>
+                  </div>
+                  
+                  <div class="col-12">
+                    <label for="password" class="form-label">변경할 비밀번호</label>
+                    <input type="password" class="form-control" name="password" id="password"
+                           placeholder="Password" data-minlength="6" required>
+                    <div class="invalid-feedback">변경할 비밀번호를 입력해주세요!</div>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="control-label">프로필 이미지</label><br>
+                    <div style="display:inline;">
+                      <label for="ex_file">
+                        <img id="profile_img" onclick="fileRemove()" 
+                        src="/assets/img/default_profile.jpg"
+                             style="width:100px; height:100px; cursor:pointer;">
+                      </label>
+                      <input type="file" id="ex_file"
+                             onchange="previewImage(this, 'user_upload_img');"
+                             style="display: none;">
+
+                      <span id='user_upload_img'></span>
+                    </div>
+                  </div>
+                  <script>
+                    var fileInfoArr = [];
+                    
+                    //썸네일 클릭시 삭제.
+                    function fileRemove() {
+                      $("#profile_img").remove();
+                      console.log(fileInfoArr);
+                    }
+
+                    //썸네일 미리보기.
+                    function previewImage(targetObj, previewId) {
+
+                      var ext = $(targetObj).val().split('.').pop().toLowerCase();
+
+                      if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+                        alert('gif, png, jpg, jpeg 형식만 업로드할 수 있습니다.');
+                        return false;
+                      }
+
+                      var preview = document.getElementById(previewId); // 미리보기 div id
+                      var ua = window.navigator.userAgent;
+
+                      if (ua.indexOf("MSIE") > -1) { //ie일때
+
+                        targetObj.select();
+                        try {
+                          var src = document.selection.createRange().text; // get file full path
+                          var ie_preview_error = document.getElementById("ie_preview_error_" + previewId);
+
+                          if (ie_preview_error) {
+                            preview.removeChild(ie_preview_error); //error가 있으면 delete
+                          }
+
+                          var img = document.getElementById(previewId); //이미지가 뿌려질 곳
+
+                          img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "', sizingMethod='scale')"; //이미지 로딩, sizingMethod는 div에 맞춰서 사이즈를 자동조절 하는 역할
+                        } catch (e) {
+                          if (!document.getElementById("ie_preview_error_" + previewId)) {
+
+                            var info = document.createElement("<p>");
+                            info.id = "ie_preview_error_" + previewId;
+                            info.innerHTML = e.name;
+                            preview.insertBefore(info, null);
+                          }
+                        }
+                      } else { //ie가 아닐때
+
+                        var files = targetObj.files;
+
+                        for (var i = 0; i < files.length; i++) {
+
+                          var file = files[i];
+                          var imageType = /image.*/; //이미지 파일일 경우만 뿌려줌.
+                          if (!file.type.match(imageType))
+                            continue;
+
+                          var prevImg = document.getElementById("profile_img"); // 이전에 미리보기가 있다면 삭제
+                          if (prevImg) {
+                            preview.removeChild(prevImg);
+                          }
+
+                          var span = document.createElement('span');
+                          span.id = "profile_img";
+                          span.style.width = '100px';
+                          span.style.height = '100px';
+                          span.style.display = 'inline-block';
+                          span.style.backgroundColor = '#cccccc';
+                          span.style.textAlign = 'center';
+                          preview.appendChild(span);
+
+                          var img = document.createElement("img"); // 크롬은 div에	 이미지가 뿌려지지 않기때문에 자식 Element를 만듬.
+                          img.id = "prev_" + previewId;
+                          img.className = "addImg";
+                          img.classList.add("obj");
+                          img.file = file;
+                          img.style.width = 'auto';
+                          img.style.height = 'inherit';
+                          img.style.cursor = 'pointer';
+                          img.onclick = () => fileRemove(); //이미지를 클릭했을 때.
+                          span.appendChild(img);
+
+                          if (window.FileReader) { // FireFox, Chrome, Opera 확인.
+                            var reader = new FileReader();
+                            reader.onloadend = (function (aImg) {
+                              return function (e) {
+                                aImg.src = e.target.result;
+                              };
+                            })(img);
+                            reader.readAsDataURL(file);
+                          } else { // safari is not supported FileReader
+                            if (!document.getElementById("sfr_preview_error_" + previewId)) {
+                              var info = document.createElement("p");
+                              info.id = "sfr_preview_error_" + previewId;
+                              info.innerHTML = "not supported FileReader";
+                              preview.insertBefore(info, null);
+                            }
+                          }
+                        }
+                      }
+                    }
+                  </script>
+
+                  <div class="col-12">
+                    <label for="nickname" class="form-label">자기소개</label>
+                    <p th:placeholder="${account.introduce}"> 
+                  </div>
+                  
+					<div class="col-12 d-flex justify-content-center">
+                    <button type="button" class="btn btn-dark btn-lg px-5" onclick="history.back()" style="margin-right: 20px">돌아가기</button>
+                    <button type="submit" class="btn btn-dark btn-lg px-5 ml-5">수정하기</button>
+                  </div>
+ 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</main><!-- End #main -->
+
+</body>
+
+</html>

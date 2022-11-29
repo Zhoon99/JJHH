@@ -48,7 +48,7 @@ public class SecurityConfig {
         
 		http.authorizeRequests()
 		.antMatchers("/","/home").authenticated()
-		.antMatchers("/log","/login/**","layout/**").permitAll();
+		.antMatchers("/log","/login/**","layout/**","/user/profile/**").permitAll();
 		
         return http.build();
     }

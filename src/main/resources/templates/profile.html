@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="layout/user_head::userHead"></head>
+
+<style>
+  .check_interest input[type="checkbox"] {
+    display: none;
+  }
+
+  .check_interest input[type="checkbox"] + span {
+    display: inline-block;
+    padding: 15px 10px;
+    border: 1px solid #dfdfdf;
+    background-color: #ffffff;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .check_interest input[type="checkbox"]:checked + span {
+    background-color: #113a6b;
+    color: #ffffff;
+  }
+</style>
+
+<body>
+
+<main>
+  <div class="container">
+
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+		
+         	<div style="height: 200px;">
+			 
+			</div>
+            <div style="position: relative; width: 800px;"> 
+            <div style="position: absolute; top:-50; right: -10; z-index: 888;"> 
+            	<button type="button" class="btn btn-outline-info" style="width:auto; padding-right: 50px; text-align: center;
+            	margin-left: 50px;">프로필</button>
+            	<button type="button" class="btn btn-outline-info" style="padding-right: 50px; text-align: center;">포트폴리오</button>
+            </div>
+            </div>
+            <div style="position: relative;">	
+	            <div class="ss" style="position: absolute; z-index:888; background: #BDBDBD; border-radius: 70%; overflow: hidden;
+	            top: -120px; left: -90;">
+					<img alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfmWAHwjHnN5SJ9tte2k9Xz_mkXEYc6XbLdA&usqp=CAU" 
+					style="width: 150px; height: 150px; object-fit: cover;
+					top: 50px;">
+				</div>
+				
+				
+				<div th:if="${#authentication.name == account.nick}" 
+				 class="ss" style="position: absolute; z-index:999; border-style: solid; border-radius: 50%; height: 30px; width: 30px; overflow: hidden;
+					background-color:white; top: 0px; left: 20px;">
+					 <a th:href="@{/user/profile/edit(id=${data_id})}" style="color:black;">
+						<i class="bi bi-pencil" style="font-size: 24px;"></i>
+					</a>
+				</div>
+			</div>
+            <div class="card mb-3" style="width: 55rem; min-height: 600px;">
+
+              <div class="card-body">
+
+                <div class="py-0">
+                </div>
+                
+                <form class="row g-3 needs-validation" action="/new" method="post" novalidate>
+                	<p>이히힝</p>
+                	<p th:text="${#authentication.name}"></p>
+                	<p th:text="${account.accountId}"></p>
+                	
+                	<h1>세션 조회</h1>
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</main><!-- End #main -->
+
+</body>
+
+</html>

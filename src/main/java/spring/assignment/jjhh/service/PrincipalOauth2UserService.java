@@ -1,56 +1,69 @@
 package spring.assignment.jjhh.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import spring.assignment.jjhh.entity.Account;
 import spring.assignment.jjhh.repository.AccountRepository;
 
 @Service
-public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
+//@RequiredArgsConstructor
+public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
+
 	
-//	@Autowired
-//	private BCryptPasswordEncoder bCryptPasswordEncoder; 
+//	private final PasswordEncoder passwordEncoder;
 //	
 	@Autowired
 	private AccountRepository repository;
-	
+
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-		System.out.println("getClientRegistration :" + userRequest.getClientRegistration());
-		System.out.println("getAccessToken :" + userRequest.getAccessToken());
-//		System.out.println(super.loadUser(userRequest).getAttributes());
-		
 		OAuth2User oAuth2User = super.loadUser(userRequest);
-		System.out.println("==========>" + oAuth2User.getAttributes());
-		System.out.println("==========>22" + oAuth2User.getAttribute("name"));
+//		System.out.println("userRequest : " + userRequest);
+//		System.out.println("getClientRegistration : " + userRequest.getClientRegistration().getRegistrationId());
+//		System.out.println("==========>" + oAuth2User.getAttributes());
+//		System.out.println("==========>22" + oAuth2User.getAttribute("login"));
+		String provider = null;
+		String providerid = null;
+		String username = null;
+		String Nick = null;
+		String password = null;
+		String email = null;
+		if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
+
+			provider = userRequest.getClientRegistration().getClientId();
+			providerid = oAuth2User.getAttribute("sub");
+			email = provider + "_" + providerid;
+			Nick = oAuth2User.getAttribute("name");
+			password = "gg";// bCryptPasswordEncoder.encode("gg");
+//			email = oAuth2User.getAttribute("email");
+		} else {
+			provider = userRequest.getClientRegistration().getClientId();
+			providerid = oAuth2User.getAttribute("id").toString();
+			email = provider + "_" + providerid;
+			
+			Nick = oAuth2User.getAttribute("login");
+			password = "gg";
+		}
 		
-		String provider = userRequest.getClientRegistration().getClientId();
-		String providerid = oAuth2User.getAttribute("sub");
-		String username = provider+"_"+providerid;
-		String Nick = oAuth2User.getAttribute("name");
-		String password = "gg";//bCryptPasswordEncoder.encode("gg");
- 		String email = oAuth2User.getAttribute("email");
- 		String role = "ROLE_USER";
-		
- 		Account userEntity = repository.findByEmail(username);
- 		
- 		if(userEntity == null) {
- 			userEntity = Account.builder()
- 				.email(email)
- 				.password(password)
- 				.nick(Nick)
- 				.provider_id(providerid)
- 				.provider(provider)
- 				.build();
- 			repository.save(userEntity);
- 					
- 		}
- 		
+		Account userEntity = repository.findByEmail(email);
+
+		if (userEntity == null) {
+			userEntity = Account.builder().email(email).password(password).nick(Nick).provider_id(providerid)
+					.provider(provider).build();
+			repository.save(userEntity);
+
+		}
 		return new PrincipalDatails(userEntity, oAuth2User.getAttributes());
+//		return super.loadUser(userRequest);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 }
