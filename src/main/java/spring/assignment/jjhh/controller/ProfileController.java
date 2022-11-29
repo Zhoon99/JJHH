@@ -23,7 +23,7 @@ public class ProfileController {
 	
 	@GetMapping("/user/profile")
 	public String profile(Model model) {
-		Long id = (long) 12; 
+		Long id = (long) 1;
 		model.addAttribute("data_id",id);
 		Account acc = profileService.selrect_Acc(id);
 		model.addAttribute("account", acc);
