@@ -32,7 +32,7 @@ public class ProfileController {
 	}
 	
 	
-	@PostMapping("/user/profile/edit")
+	@GetMapping("/user/profile/edit")
 	public String profile_edit(@RequestParam("id") Long id, Model model) {
 //		Long id = (long) 12;
 		Account acc = profileService.selrect_Acc(id);
