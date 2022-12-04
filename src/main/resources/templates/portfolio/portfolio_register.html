@@ -392,16 +392,19 @@
                         }
                     });
 
+                    alert(techStack);
+                    alert(JSON.stringify(memberRoleList));
+
                     var portfolio = {
                         projectName: $('#projectName').val(),
                         introduce: $('#introduce').val(),
                         startDate: $('#startDate').val(),
                         lastDate: $('#lastDate').val(),
-                        redeme: editor.getData(),
-                        disclosure: $('#disclosure').val(),
+                        readme: editor.getData(),
+                        disclosure: $('input[name="disclosure"]:checked').val(),
 
                         techStackList: techStack,
-                        teamList: memberRole
+                        teamList: memberRoleList
                     };
 
                     var formData = new FormData();

@@ -25,7 +25,7 @@ public class PortfolioDto {
         private String readme;
         private String disclosure;
         private List<TechStackDto.Request> techStackList;
-//        private List<TeamDto.Request> teamList;
+        private List<TeamDto.Request> teamList;
 
     }
 
