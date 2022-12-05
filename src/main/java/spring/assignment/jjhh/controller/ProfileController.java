@@ -34,8 +34,9 @@ public class ProfileController {
 	private final PasswordEncoder passwordEncoder;
 
 	@GetMapping("/user/profile")
-	public String my_profile(@RequestParam("id") Long id, Model model) {
+	public String my_profile(@RequestParam("id") Long id, @AuthenticationPrincipal PrincipalDatails principalDatails, Model model) {
 		Account acc = profileService.selrect_Acc(id);
+		System.out.println("aaa:" + principalDatails.getid());
 		model.addAttribute("account", acc);
 		return "profile";
 	}
@@ -46,9 +47,11 @@ public class ProfileController {
 			@AuthenticationPrincipal PrincipalDatails principalDatails, Model model) {
 		
 		if(principalDatails.getid() == id) {
+			System.out.println("AAA");
 			Account acc = profileService.selrect_Acc(id);
 			model.addAttribute("account", acc);
 			return "profile_edit";
+//			return "redirect:/user/profile?id=" + principalDatails.getid();
 		}
 		else {
 			return "redirect:/user/profile?id=" + principalDatails.getid();
@@ -63,11 +66,14 @@ public class ProfileController {
 		System.out.println("비밀번호:" + acc.getPassword());
 		String sourceFileName = file.getOriginalFilename();
 		System.out.println("이미지 : " + sourceFileName);
-		String ps = passwordEncoder.encode(acc.getPassword());
+		String ps = null;
 		
 		Account ac = profileService.selrect_Acc(id);
 		ac.setNick(acc.getNick());
-		if(acc.getPassword() != null) ac.setPassword(ps);
+		if(acc.getPassword() != null) {
+			ps = passwordEncoder.encode(acc.getPassword());
+			ac.setPassword(ps);
+		}
 		
 		if(!file.isEmpty()) {
 			if(ac.getProfileImg() != null) profileService.deleteFile(ac.getProfileImg());

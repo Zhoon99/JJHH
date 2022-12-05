@@ -30,7 +30,7 @@ public class SecurityConfig {
         
         http.csrf().disable();
 		http.authorizeRequests()
-				.antMatchers("/","/home","/log","/login/**","layout/**").permitAll()
+				.antMatchers("/","/home","/log","/login/**","layout/**","/signUp").permitAll()
 				.antMatchers("/user/**").authenticated()
 				.anyRequest().authenticated()
 				;
