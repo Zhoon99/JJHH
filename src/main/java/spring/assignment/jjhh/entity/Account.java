@@ -34,9 +34,13 @@ public class Account {
 	private String password;
 	
 	private String nick;
+
+	private String role;
 	
 	@Column(name = "profile_img")
 	private String profileImg;
+	
+	private String profileOriName;
 	
 	@Column(name = "profile_thumb")
 	private String profileThumb;
@@ -62,6 +66,9 @@ public class Account {
 		account.setNick(dto.getNick());
         String password = passwordEncoder.encode(dto.getPassword());
         account.setPassword(password);
+        account.setRole(dto.getRole());
+        account.setProfileImg(dto.getProfile_img());
+        account.setProfileOriName(dto.getProfileOriName());
         return account;
 	}
 	
@@ -73,13 +80,14 @@ public class Account {
 	}
 		
 	@Builder
-    public Account(String email, String password,String nick, String profile_img, String profile_thumb, String introduce, String provider_id, String provider) {
+    public Account(String email, String password,String nick, String role ,String profile_img, String profile_thumb, String introduce, String provider_id, String provider) {
 		this.email = email;
 		this.password = password;
 		this.nick = nick;
 		this.profileImg = profile_img;
 		this.profileThumb = profile_thumb;
 		this.introduce = introduce;
+		this.role = role;
 		this.providerId = provider_id;
 		this.provider = provider;
 	}
