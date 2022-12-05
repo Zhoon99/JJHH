@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"fileList", "techStackList", "teamList", "commentList"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Portfolio extends BaseEntity {
@@ -25,8 +25,11 @@ public class Portfolio extends BaseEntity {
     @Column(nullable = false)
     private String introduce;
 
-    @Column(length = 50, nullable = false)
-    private String duration;
+    @Column(length = 10, nullable = false)
+    private String startDate;
+
+    @Column(length = 10, nullable = false)
+    private String lastDate;
 
     @Lob
     private String readme;
@@ -52,4 +55,9 @@ public class Portfolio extends BaseEntity {
 
     @OneToMany(mappedBy = "portfolio")
     private List<Comment> commentList = new ArrayList<>();
+
+    public void registInit(Integer views, Account account) {
+        this.views = views;
+        this.account = account;
+    }
 }

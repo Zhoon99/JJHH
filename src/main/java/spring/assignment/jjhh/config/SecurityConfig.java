@@ -28,7 +28,12 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         
-        //http.csrf().disable();
+        http.csrf().disable();
+		http.authorizeRequests()
+				.antMatchers("/","/home","/log","/login/**","layout/**").permitAll()
+				.antMatchers("/user/**").authenticated()
+				.anyRequest().authenticated()
+				;
         
         http.formLogin()
         	.loginPage("/login")
@@ -45,10 +50,6 @@ public class SecurityConfig {
     		.loginPage("/login")
     		.userInfoEndpoint()
     		.userService(principalOauth2UserService);
-        
-		http.authorizeRequests()
-		.antMatchers("/","/home").authenticated()
-		.antMatchers("/log","/login/**","layout/**","/user/profile/**").permitAll();
 		
         return http.build();
     }

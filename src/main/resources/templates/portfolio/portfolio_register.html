@@ -188,7 +188,7 @@
 
                         <form id="memberRoleForm">
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label mt-4">커리큘럼</label>
+                                <label class="col-sm-2 col-form-label mt-4">역할</label>
                                 <div class="col-sm-10">
 
                                     <table>
@@ -287,7 +287,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label d-flex align-items-center">활동 사진</label>
+                            <label class="col-sm-2 col-form-label d-flex align-items-center">파일</label>
                             <div class="col-sm-10">
                                 <div style="display:inline;">
 <!--                                    <label for="activityImg">-->
@@ -295,8 +295,7 @@
 <!--                                             style="width:100px; height:100px; cursor: pointer;">-->
 <!--                                    </label>-->
                                     <form id="addForm" method="post" enctype="multipart/form-data">
-                                        <input type="file" id="activityImg" name="activityImg[]"
-                                               onchange="atvPreviewImage(this,'atv_img_preview')" multiple="true">
+                                        <input type="file" id="file" name="file[]" multiple="true">
                                     </form>
                                     <span id='atv_img_preview'></span>
                                 </div>
@@ -361,15 +360,76 @@
             </div> <!-- card-body end -->
 
             <script>
+                let techStack = [];
+
+                let memberRole = {
+                    memberName: '',
+                    role: '',
+                }
+
+                let memberRoleList = [];
                 function dataSubmit() {
-                    let techStack = [];
                     $('#techStackForm input').each(function (index) {
-                        var input = $(this);
-                        techStack.push(input.val());
+                        techStack.push($(this).val());
                     });
 
-                    $('#memberRole-result').each(function (index) {
-                        //var
+                    $('#memberRole-result textarea, #memberRole-result input').each(function (index, el) {
+                        var input = $(this);
+                        switch (input.attr('name')) {
+                            case 'memberName':
+                                memberRole.memberName = input.val();
+                                break;
+                            case 'role':
+                                memberRole.role = input.val();
+                                break;
+                        }
+                        if (index % 2 == 1) {
+                            memberRoleList.push(memberRole);
+                            memberRole = {
+                                memberName: '',
+                                role: '',
+                            }
+                        }
+                    });
+
+                    alert(techStack);
+                    alert(JSON.stringify(memberRoleList));
+
+                    var portfolio = {
+                        projectName: $('#projectName').val(),
+                        introduce: $('#introduce').val(),
+                        startDate: $('#startDate').val(),
+                        lastDate: $('#lastDate').val(),
+                        readme: editor.getData(),
+                        disclosure: $('input[name="disclosure"]:checked').val(),
+
+                        techStackList: techStack,
+                        teamList: memberRoleList
+                    };
+
+                    var formData = new FormData();
+
+                    var FileSize = document.getElementById('file').files.length;
+                    for (var index = 0; index < FileSize; index++) {
+                        formData.append("file", document.getElementById('file').files[index]);
+                    }
+                    formData.append("portfolio", new Blob([JSON.stringify(portfolio)], {type: "application/json"}));
+
+                    $.ajax({
+                        url: "/user/portfolio/register",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        enctype: 'multipart/form-data',
+                        type: "POST",
+                        success: function () {
+                            // window.location = "/";
+                            alert("포트폴리오 등록에 성공했습니다.");
+                        },
+                        error: function () {
+                            // window.location = "/";
+                            alert("포트폴리오 등록에 실패했습니다.");
+                        }
                     });
                 }
             </script>
