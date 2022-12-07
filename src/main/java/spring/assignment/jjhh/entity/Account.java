@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.ToString;
 import spring.assignment.jjhh.dto.AccountDto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import java.util.List;
 @ToString(exclude = {"portfolioList", "commentList"})
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class Account implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/user_head::userHead"></head>
+
+<style>
+  body {
+    background: #F5F9FD;
+  }
+
+</style>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header th:replace="layout/header::header"></header>
+
+<main id="main" class="main">
+  <section class="section">
+    <div class="register-container card">
+      <div class="card-body px-5 fw-bold">
+
+        <p th:text="${search}"></p>
+
+      </div>
+    </div>
+  </section>
+</main><!-- End #main -->
+
+</body>
+
+</html>

@@ -3,16 +3,17 @@ package spring.assignment.jjhh.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@ToString(exclude = {"fileList", "techStackList", "teamList", "commentList"})
+@ToString(exclude = {"account","fileList","techStackList","teamList","commentList"})
 @NoArgsConstructor
 @AllArgsConstructor
-public class Portfolio extends BaseEntity {
+public class Portfolio extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
