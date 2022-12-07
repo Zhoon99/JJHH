@@ -34,6 +34,25 @@ public class PortfolioDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class Response {
+
+        private Long id;
+        private String projectName;
+        private String introduce;
+        private String startDate;
+        private String lastDate;
+        private String readme;
+        private String disclosure;
+        private AccountResponse writer;
+        private List<TechStackDto.Request> techStackList;
+        private List<TeamDto.Request> teamList;
+
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Preview {
 
         private Long id;
@@ -42,7 +61,8 @@ public class PortfolioDto {
         private String startDate;
         private String lastDate;
         private Integer views;
-
+        private String disclosure;
+        private String regDate;
         private List<TechStack> techStackList;
         private List<Team> teamList;
 

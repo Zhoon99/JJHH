@@ -22,6 +22,7 @@ import spring.assignment.jjhh.repository.PortfolioRepository;
 import spring.assignment.jjhh.repository.TeamRepository;
 import spring.assignment.jjhh.repository.TechStackRepository;
 
+import java.time.format.DateTimeFormatter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -133,6 +134,8 @@ public class PortfolioService {
                     .startDate(element.getStartDate())
                     .lastDate(element.getLastDate())
                     .views(element.getViews())
+                    .disclosure(element.getDisclosure())
+                    .regDate(element.getRegDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")))
                     .techStackList(element.getTechStackList())
                     .teamList(element.getTeamList())
                     .build();
