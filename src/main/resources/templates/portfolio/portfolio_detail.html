@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/user_head::userHead"></head>
+
+<style>
+    body {
+        background: #F5F9FD;
+    }
+
+    .register-container {
+        width: 60%;
+        margin: 0 auto;
+        border: 4px solid #012567;
+    }
+
+    table {
+        width: 100%;
+        border: 1px solid #012567;
+        border-collapse: collapse;
+    }
+
+    thead {
+        font-weight: bold;
+        color: #fff;
+        background: #012567;
+    }
+
+    th, td {
+        border: 1px solid #012567;
+        padding: 2px 10px;
+    }
+
+    .ck-editor__editable:not(.ck-editor__nested-editable) {
+        min-height: 300px;
+    }
+
+    .project-name {
+        margin: 40px 0;
+        font-size: 28px;
+        font-weight: 800;
+        color: #012970;
+        font-family: "Poppins", sans-serif;
+        text-align: start;
+        display: inline;
+    }
+
+    .profile-wrap div {
+        width: 60px;
+        height: 60px;
+        border-radius: 70%;
+        border: 2px solid #012970;
+        overflow: hidden;
+    }
+
+    .profile-wrap div img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile-wrap {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        margin-top: 30px;
+    }
+
+    .detail-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+    }
+
+    .nickname {
+        font-weight: 900;
+        color: #012970;
+        font-size: 20px;
+        margin-left: 10px;
+    }
+
+    .introduce {
+        border: 2px solid #012970;
+        padding: 5px 5px;
+
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    .tech-tag {
+        color: black;
+        height: 40px;
+        font-size: 15px;
+        font-weight: 900;
+        border: 2px solid #012970;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .tech-name {
+        vertical-align: middle;
+    }
+</style>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header th:replace="layout/header::header"></header>
+
+<main id="main" class="main">
+    <section class="section">
+        <div class="register-container card">
+            <div class="card-body px-5 fw-bold">
+                <div class="reg-split">
+                    <div class="page-1 px-1">
+                        <div class="detail-header">
+                            <h5 class="project-name" th:text="${portfolio.getProjectName()}">err</h5>
+                            <div class="ms-auto">
+                                <a class="profile-wrap" th:href="'/user/profile?id=' + ${portfolio.getWriter().getAccountId()}">
+                                    <div>
+                                        <img th:src="${portfolio.getWriter().getProfile_img()}" class="profile_img">
+                                    </div>
+                                    <p class="nickname mt-3" th:text="${portfolio.getWriter().getNick()}">err</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 control-label">한 줄 소개</label>
+                            <div class="col-sm-10">
+                                <div class="introduce">
+                                    <p th:text="${portfolio.getIntroduce()}">err</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 control-label">진행 기간</label>
+                            <div class="col-sm-10">
+                                <div th:text="${portfolio.getStartDate()} + ' ~ ' + ${portfolio.getLastDate()}">err</div>
+                            </div>
+                        </div>
+
+                        <div class="row my-4">
+                            <label class="col-sm-2 control-label mt-2">기술 스택</label>
+                            <div class="col-sm-10">
+
+                                <div class="row row-cols-4">
+                                    <div th:each="el, i: ${portfolio.getTechStackList()}">
+                                        <div class="tech-tag">
+                                            <p class="tech-name" th:text="${el.getTechName()}"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 control-label">역할</label>
+                            <div class="col-sm-10">
+
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <td width="30%">팀원</td>
+                                        <td>역할</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:each="el, i: ${portfolio.getTeamList()}">
+                                        <tr>
+                                            <td width="30%" th:text="${el.getMemberName()}">err</td>
+                                            <td th:text="${el.getRole()}">err</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 control-label">readme</label>
+                            <div class="col-sm-10">
+                                <div class="cls-introduce">
+                                    <textarea name="introduce" id="introduce" th:value="${portfolio.getReadme()}" readOnly style="display: none;"></textarea>
+                                    <script type="text/javascript">
+                                        $(document).ready(function () {
+                                            ClassicEditor
+                                                .create( document.querySelector( '#introduce' ), {
+                                                } )
+                                                .then( editor => {
+                                                    editor.enableReadOnlyMode( 'introduce' );
+                                                    const toolbarElement = editor.ui.view.toolbar.element;
+                                                    toolbarElement.style.display = 'none';
+
+                                                    $.ajax({
+                                                        url: "/portfolio/detail/readme/" + [[${portfolio.getId()}]],
+                                                        dataType: "text",
+                                                        contentType: "application/json; charset=UTF-8",
+                                                        type: "POST",
+                                                        success: function (data) {
+                                                            editor.setData(data);
+                                                        },
+                                                        error: function (request,status,error) {
+                                                            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                                                        }
+                                                    });
+                                                } )
+                                                .catch( error => {
+                                                    console.log( error );
+                                                } );
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                    </div>
+
+                </div>
+            </div> <!-- card-body end -->
+
+        </div>
+    </section>
+</main><!-- End #main -->
+
+</body>
+
+</html>

@@ -4,10 +4,68 @@
 <head th:replace="layout/user_head::userHead"></head>
 
 <style>
-  body {
-    background: #F5F9FD;
-  }
+    body {
+        background: #F5F9FD;
+    }
 
+    .searchBar {
+        width: 100%;
+        text-align: center;
+        margin-top: 30px;
+
+    }
+
+    .searchBar-input {
+        font-size: 16px;
+        font-weight: 600;
+        width: 70%;
+        height: 50px;
+        border-radius: 50px;
+        border: 3px solid #012970;
+        padding: 7px 15px;
+        text-align: left;
+        display: inline;
+        outline: none;
+    }
+
+    .preview-name {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+    }
+
+    .preview-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+    }
+
+    .preview-wrap {
+        padding: 10px 30px;
+        font-weight: 900;
+        color: black;
+    }
+
+    .portfolio-result {
+        border: 3px solid #012970;
+        background-color: #ffffff;
+        margin: 20px 0;
+
+        border-top-left-radius: 2em;
+        border-top-right-radius: 2em;
+        border-bottom-left-radius: 2em;
+        border-bottom-right-radius: 2em;
+    }
+
+    .result-count {
+        font-weight: 900;
+        font-size: 20px;
+        margin: 30px 20px;
+    }
+
+    .page-nav {
+        text-align: center;
+    }
 </style>
 
 <body>
@@ -16,15 +74,62 @@
 <header th:replace="layout/header::header"></header>
 
 <main id="main" class="main">
-  <section class="section">
-    <div class="register-container card">
-      <div class="card-body px-5 fw-bold">
+    <section class="section">
 
-        <p th:text="${search}"></p>
+        <div class="container">
+            <div class="searchBar">
+                <input class="searchBar-input" type="search" id="search-bar" placeholder="클래스 검색하기!" spellcheck="false"
+                       onkeyup="search();"/>
+            </div>
 
-      </div>
-    </div>
-  </section>
+            <div th:if="${search}">
+                <div class="result-count" th:text="${search.size} + '개의 결과'"></div>
+                <div class="portfolio-result" th:each="el, i: ${search}">
+
+                    <a th:href="'/portfolio/detail?p=' + ${el.getId()}">
+                        <div class="preview-wrap">
+                            <div class="preview-name">
+                                <i class="bi bi-people-fill me-1 fw-bold"></i>
+                                <p th:text="${el.getProjectName()}">err</p>
+                                <span class="ms-auto" th:text="'upload' + ${el.getRegDate()}"></span>
+                            </div>
+                            <p th:text="${el.getIntroduce()}">err</p>
+                            <div class="preview-info">
+                                <p th:text="'View ' + ${el.getViews()} + ' | '"></p>
+                                <p th:text="${el.getStartDate()} + ' ~ ' + ${el.getLastDate()} + ' | '"></p>
+                                <p th:text="${el.getTeamList().size} + '명 참여'"></p>
+                            </div>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+
+            <div th:if="${error}">
+                <p class="fw-bold fs-4 text-center mt-5" th:text="${error}"></p>
+            </div>
+
+        </div>
+
+        <nav class="page-nav">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </section>
 </main><!-- End #main -->
 
 </body>
