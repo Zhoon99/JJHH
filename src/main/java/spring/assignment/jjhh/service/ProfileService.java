@@ -8,8 +8,6 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,9 +23,6 @@ import spring.assignment.jjhh.repository.AccountRepository;
 @RequiredArgsConstructor
 @Slf4j
 public class ProfileService {
-	
-	@Value("${ImgLocation}")
-	private String ImgLocation;
 	
 	private final AccountRepository accountRepository;
 	private final String rootPath = System.getProperty("user.dir");
