@@ -91,6 +91,7 @@ public class PortfolioService {
                String fileDir = rootPath + "/src/main/resources/static/data";
                String fileUploadFullUrl = fileDir + "/" + imgName;
         	   
+               String filepath = "/data/" + imgName;
                FileOutputStream fos;
                try {
             	   fos = new FileOutputStream(fileUploadFullUrl);
@@ -102,7 +103,7 @@ public class PortfolioService {
                
                
         	   file.setPortfolio(portfolio);
-        	   file.setPath(fileUploadFullUrl);
+        	   file.setPath(filepath);
 	           file.setUuid(uuid.toString());
 	           file.setFileName(files[i].getOriginalFilename());
 	           fileRepository.save(file);
