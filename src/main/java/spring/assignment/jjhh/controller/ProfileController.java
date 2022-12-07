@@ -70,11 +70,13 @@ public class ProfileController {
 		
 		Account ac = profileService.selrect_Acc(id);
 		ac.setNick(acc.getNick());
-		if(acc.getPassword() != null) {
+		if(acc.getPassword() != null || !acc.getPassword().equals("") || !acc.getPassword().isEmpty()) {
 			ps = passwordEncoder.encode(acc.getPassword());
-			ac.setPassword(ps);
+			System.out.println("YY");
+//			ac.setPassword(ps);
 		}
-		
+		else System.out.println("NN");
+		ac.setIntroduce(acc.getIntroduce()); 
 		if(!file.isEmpty()) {
 			if(ac.getProfileImg() != null) profileService.deleteFile(ac.getProfileImg());
 			ac.setProfileImg(null);

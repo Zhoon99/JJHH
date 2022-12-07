@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import spring.assignment.jjhh.entity.Account;
 
-@Repository
 public interface AccountRepository extends JpaRepository<Account, Long>{
 	Account findByEmail(String email);
 	Account findByAccountId(Long accountId);

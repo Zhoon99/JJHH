@@ -139,6 +139,7 @@
                                             console.error(error);
                                         });
                                 </script>
+                                <textarea id="content" name="introduce" th:text="${account.introduce}" style="display: none"></textarea>
                             </div>
                         </div>
                   
@@ -163,13 +164,23 @@
   </div>
 </main><!-- End #main -->
 <script type="text/javascript">
+$(document).ready(function(){
+	
+	let txt = document.getElementById("content").value;
+
+	editor.setData(txt);
+})
 function psck() {
 	let ps1 = document.getElementById("password1").value;
 	let ps2 = document.getElementById("password2").value;
+	
 	if(ps1 != ps2) {
 		alert("두 비밀번호가 서로 다릅니다. 다시 확인해주세요.");
 		return false;
 	}
+	document.getElementById("content").value = editor.getData();
+	if(ps1 == "") ps1 = "";
+	//return false;
 }
 </script>
 </body>

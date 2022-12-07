@@ -2,6 +2,9 @@ package spring.assignment.jjhh.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,9 @@ import spring.assignment.jjhh.service.PrincipalDatails;
 public class PortfolioController {
 
     private final PortfolioService portfolioService;
+    
+    private final String rootPath = System.getProperty("user.dir");
+    
 
     @GetMapping("/user/portfolio/register")
     public String register() {
@@ -29,8 +35,8 @@ public class PortfolioController {
     @ResponseBody
     public void register(@RequestPart(value = "portfolio") PortfolioDto.Request portfolioDto,
                          @RequestPart(value = "file", required = false) MultipartFile[] files,
-                         Authentication authentication) {
-
+                         Authentication authentication) {    	
+    	
         PrincipalDatails userPrincipal = (PrincipalDatails) authentication.getPrincipal();
         portfolioService.registPortfolio(portfolioDto, files, userPrincipal.getAccount());
     }
