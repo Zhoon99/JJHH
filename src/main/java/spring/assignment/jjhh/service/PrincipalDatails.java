@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -38,7 +39,7 @@ public class PrincipalDatails implements UserDetails, OAuth2User{
 			
 			@Override
 			public String getAuthority() {
-				return "";
+				return account.getRole();
 			}
 		});
 		return collect;
@@ -51,7 +52,7 @@ public class PrincipalDatails implements UserDetails, OAuth2User{
 
 	@Override
 	public String getUsername() {
-		System.out.println("이히히");
+//		System.out.println("이히히");
 		return account.getNick();
 	}
 
@@ -75,7 +76,13 @@ public class PrincipalDatails implements UserDetails, OAuth2User{
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	@Autowired
+	public Long getid() {
+		return account.getAccountId();
+	}
 
+	
 	@Override
 	public Map<String, Object> getAttributes() {
 		return attributes;

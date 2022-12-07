@@ -21,12 +21,9 @@ public class principalDetailsService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		System.out.println("username: " + email);
 		Account userEntity = accountRepository.findByEmail(email);
-		System.out.println("a");
 		if(userEntity != null) {
-			System.out.println("a1");
 			return new PrincipalDatails(userEntity);
 		}
-		System.out.println("a2");
 		return null;
 	}
 

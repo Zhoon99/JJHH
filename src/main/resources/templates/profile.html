@@ -42,18 +42,25 @@
             </div>
             </div>
             <div style="position: relative;">	
-	            <div class="ss" style="position: absolute; z-index:888; background: #BDBDBD; border-radius: 70%; overflow: hidden;
+	            <div th:if="${account.profileImg}" class="ss" style="position: absolute; z-index:888; background: #BDBDBD; border-radius: 70%; overflow: hidden;
 	            top: -120px; left: -90;">
-					<img alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfmWAHwjHnN5SJ9tte2k9Xz_mkXEYc6XbLdA&usqp=CAU" 
+					<img alt="" th:src="${account.profileImg}" 
+					style="width: 150px; height: 150px; object-fit: cover;
+					top: 50px;">
+				</div>
+				
+				<div th:unless="${account.profileImg}" class="ss" style="position: absolute; z-index:888; background: #BDBDBD; border-radius: 70%; overflow: hidden;
+	            top: -120px; left: -90;">
+					<img alt="" src="/assets/img/default_profile.jpg" 
 					style="width: 150px; height: 150px; object-fit: cover;
 					top: 50px;">
 				</div>
 				
 				
-				<div th:if="${#authentication.name == account.nick}" 
+				<div th:if="${#authentication.principal.account.accountId == account.accountId}" 
 				 class="ss" style="position: absolute; z-index:999; border-style: solid; border-radius: 50%; height: 30px; width: 30px; overflow: hidden;
 					background-color:white; top: 0px; left: 20px;">
-					 <a th:href="@{/user/profile/edit(id=${data_id})}" style="color:black;">
+					 <a th:href="@{/user/profile/edit(id=${#authentication.principal.account.accountId})}" style="color:black;">
 						<i class="bi bi-pencil" style="font-size: 24px;"></i>
 					</a>
 				</div>
@@ -62,15 +69,42 @@
 
               <div class="card-body">
 
-                <div class="py-0">
-                </div>
+                <div class="row mb-3">
+                            <label for="ckeditor" class="col-sm-12 col-form-label">readme</label>
+                            <div class="col-sm-13">
+                                        <textarea id="ckeditor" name="editor" placeholder=""
+                                                  style="display: none; width: 100%;"></textarea>
+
+                                <script>
+                                    let editor;
+
+                                    ClassicEditor
+                                        .create(document.querySelector('#ckeditor'), {})
+                                        
+                                        
+                                        .then(newEditor => {
+                                            editor = newEditor;
+                                        })
+										
+                                        .then(editor => {
+                                            window.editor = editor;
+
+                                        })
+                                        
+                                        .catch(error => {
+                                            console.error('Oops, something went wrong!');
+                                            console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                                            console.warn('Build id: g64ljk55ssvc-goqlohse75uw');
+                                            console.error(error);
+                                        });
+                                     
+                                </script>
+                                <textarea id="content" name="introduce" style="display: flex"></textarea>
+                            </div>
+                        </div>
                 
                 <form class="row g-3 needs-validation" action="/new" method="post" novalidate>
-                	<p>이히힝</p>
-                	<p th:text="${#authentication.name}"></p>
-                	<p th:text="${account.accountId}"></p>
-                	
-                	<h1>세션 조회</h1>
+                	<p th:text="${account.introduce}"></p>
                 </form>
 
               </div>
@@ -84,7 +118,10 @@
 
   </div>
 </main><!-- End #main -->
+<script type="text/javascript">
 
+
+</script>
 </body>
 
 </html>

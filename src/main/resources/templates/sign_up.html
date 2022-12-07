@@ -47,7 +47,7 @@
 
                 <hr>
 
-                <form class="row g-3 needs-validation" action="/new" method="post" novalidate>
+                <form class="row g-3 needs-validation" action="/new" method="post" enctype="multipart/form-data" novalidate>
 
                   <div class="col-12">
                     <label for="email" class="form-label">이메일</label>
@@ -64,15 +64,14 @@
                     <div class="invalid-feedback">비밀번호를 입력해주세요!</div>
                   </div>
 
-                  <div class="col-12">
+                 <div class="col-12">
                     <label class="control-label">프로필 이미지</label><br>
                     <div style="display:inline;">
                       <label for="ex_file">
-                        <img src="/images/common/add_img.png"
-                             style="width:100px; height:100px; cursor:pointer;">
+                        <img id="profile_img" onclick="fileRemove()" src="/assets/img/default_profile.jpg"
+                             style="width:150px; height:150px; cursor:pointer; border-radius: 90%;">
                       </label>
-                      <input type="file" id="ex_file"
-                             onchange="previewImage(this, 'user_upload_img');"
+                      <input type="file" name="imgsw" id="ex_file" accept=".jpg, .png"
                              style="display: none;">
 
                       <span id='user_upload_img'></span>
@@ -80,104 +79,26 @@
                   </div>
                   <script>
                     var fileInfoArr = [];
-
-                    //썸네일 클릭시 삭제.
-                    function fileRemove() {
-                      $("#profile_img").remove();
-                      console.log(fileInfoArr);
-                    }
-
-                    //썸네일 미리보기.
-                    function previewImage(targetObj, previewId) {
-
-                      var ext = $(targetObj).val().split('.').pop().toLowerCase();
-
-                      if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
-                        alert('gif, png, jpg, jpeg 형식만 업로드할 수 있습니다.');
-                        return false;
-                      }
-
-                      var preview = document.getElementById(previewId); // 미리보기 div id
-                      var ua = window.navigator.userAgent;
-
-                      if (ua.indexOf("MSIE") > -1) { //ie일때
-
-                        targetObj.select();
-                        try {
-                          var src = document.selection.createRange().text; // get file full path
-                          var ie_preview_error = document.getElementById("ie_preview_error_" + previewId);
-
-                          if (ie_preview_error) {
-                            preview.removeChild(ie_preview_error); //error가 있으면 delete
-                          }
-
-                          var img = document.getElementById(previewId); //이미지가 뿌려질 곳
-
-                          img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "', sizingMethod='scale')"; //이미지 로딩, sizingMethod는 div에 맞춰서 사이즈를 자동조절 하는 역할
-                        } catch (e) {
-                          if (!document.getElementById("ie_preview_error_" + previewId)) {
-
-                            var info = document.createElement("<p>");
-                            info.id = "ie_preview_error_" + previewId;
-                            info.innerHTML = e.name;
-                            preview.insertBefore(info, null);
-                          }
-                        }
-                      } else { //ie가 아닐때
-
-                        var files = targetObj.files;
-
-                        for (var i = 0; i < files.length; i++) {
-
-                          var file = files[i];
-                          var imageType = /image.*/; //이미지 파일일 경우만 뿌려줌.
-                          if (!file.type.match(imageType))
-                            continue;
-
-                          var prevImg = document.getElementById("profile_img"); // 이전에 미리보기가 있다면 삭제
-                          if (prevImg) {
-                            preview.removeChild(prevImg);
-                          }
-
-                          var span = document.createElement('span');
-                          span.id = "profile_img";
-                          span.style.width = '100px';
-                          span.style.height = '100px';
-                          span.style.display = 'inline-block';
-                          span.style.backgroundColor = '#cccccc';
-                          span.style.textAlign = 'center';
-                          preview.appendChild(span);
-
-                          var img = document.createElement("img"); // 크롬은 div에 이미지가 뿌려지지 않기때문에 자식 Element를 만듬.
-                          img.id = "prev_" + previewId;
-                          img.className = "addImg";
-                          img.classList.add("obj");
-                          img.file = file;
-                          img.style.width = 'auto';
-                          img.style.height = 'inherit';
-                          img.style.cursor = 'pointer';
-                          img.onclick = () => fileRemove(); //이미지를 클릭했을 때.
-                          span.appendChild(img);
-
-                          if (window.FileReader) { // FireFox, Chrome, Opera 확인.
-                            var reader = new FileReader();
-                            reader.onloadend = (function (aImg) {
-                              return function (e) {
-                                aImg.src = e.target.result;
-                              };
-                            })(img);
-                            reader.readAsDataURL(file);
-                          } else { // safari is not supported FileReader
-                            if (!document.getElementById("sfr_preview_error_" + previewId)) {
-                              var info = document.createElement("p");
-                              info.id = "sfr_preview_error_" + previewId;
-                              info.innerHTML = "not supported FileReader";
-                              preview.insertBefore(info, null);
-                            }
-                          }
-                        }
-                      }
-                    }
+                   	
+                    let filetag = document.querySelector("input[name=imgsw]");
+                   	filetag.onchange = function() {
+                   		let imgTag = document.querySelector("#profile_img");
+                   		
+                   		if(filetag.files.length > 0) {
+                   			let reader = new FileReader();
+                   			
+                   			reader.onload = function(data) {
+                   				//alert(data); 
+                   				imgTag.src = data.target.result;
+                   			}
+                   			reader.readAsDataURL(filetag.files[0]);
+                   		} else {
+                   			imgTag.src = "";
+                   		} 
+                   			
+                   		
+                   	}
+                      
                   </script>
 
                   <div class="col-12">
@@ -187,118 +108,44 @@
                     <div class="invalid-feedback">닉네임을 입력해주세요!</div>
                   </div>
                   
+                   <div class="row mb-3">
+                            <label for="ckeditor" class="col-sm-12 col-form-label">readme</label>
+                            <div class="col-sm-13">
+                                        <textarea id="ckeditor" name="editor" placeholder=""
+                                                  style="display: none; width: 100%;"></textarea>
+
+                                <script>
+                                    let editor;
+
+                                    ClassicEditor
+                                        .create(document.querySelector('#ckeditor'), {})
+                                        .then(newEditor => {
+                                            editor = newEditor;
+                                        })
+
+                                        .then(editor => {
+                                            window.editor = editor;
+
+                                        })
+                                        .catch(error => {
+                                            console.error('Oops, something went wrong!');
+                                            console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                                            console.warn('Build id: g64ljk55ssvc-goqlohse75uw');
+                                            console.error(error);
+                                        });
+                                </script>
+                                <textarea id="content" name="introduce" style="display: flex"></textarea>
+                            </div>
+                        </div>
+                  
 					<div class="col-12 d-flex justify-content-center">
                     <button type="button" class="btn btn-dark btn-lg px-5" onclick="history.back()" style="margin-right: 20px">돌아가기</button>
-                    <button type="submit" class="btn btn-dark btn-lg px-5 ml-5">가입하기</button>
+                    <button type="submit" onclick="edit_set" class="btn btn-dark btn-lg px-5 ml-5" >가입하기</button>
+                    
                   </div>
-                  <!-- 
-                  <div class="col-12">
-                    <label for="introduce" class="control-label">자기소개</label>
-                    <div class="textLengthWrap col-sm-2 justify-content-end">
-                      <span class="textCount">0자</span>
-                      <span class="textTotal">/150자</span>
-                    </div>
-                    <textarea class="form-control" placeholder="소개를 입력해 주세요" name="introduce" id="introduce"
-                              maxlength="150" style="height: 100px; resize: none;"
-                              required></textarea>
-                  </div>
-                  
-                   
-                  <script>
-                    $('#introduce').keyup(function (e) {
-                      let content = $(this).val();
-
-                      // 글자수 세기
-                      if (content.length == 0 || content == '') {
-                        $('.textCount').text('0자');
-                      } else {
-                        $('.textCount').text(content.length + '자');
-                      }
-
-                      // 글자수 제한
-                      if (content.length > 150) {
-                        // 150자 부터는 타이핑 되지 않도록
-                        $(this).val($(this).val().substring(0, 150));
-                        // 150자 넘으면 알림창 뜨도록
-                        alert('150자까지 입력 가능합니다.');
-                      };
-                    });
-                  </script>
--->
-<!-- 
-                  <div class="col-12">
-                    <div class="form-group">
-                      <label class="control-label">관심도 (최대 5개까지 선택해주세요!)</label> <br>
-                      <div class="row row-cols-5">
-                        <div class="col" th:each="category : ${categoryList}">
-                          <label class="check_interest">
-                            <input type="checkbox" name="interest" th:value="${category.categoryName}">
-                            <span th:text="${category.categoryName}">err</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <script>
-                    $(document).ready(function () {
-                      $("input[type='checkbox']").on("click", function () {
-                        var count = $("input[name='interest']:checked").length;
-                        if (count > 5) {
-                          $(this).prop("checked", false);
-                          alert("5개까지만 선택해주세요");
-                        }
-                      })
-                    })
-                  </script>
-
-                  <div class="col-12 d-flex justify-content-center">
-                    <button type="button" class="btn btn-dark btn-lg px-5" onclick="history.back()">돌아가기</button>
-                    <button type="button" class="btn btn-dark btn-lg px-5 ml-5" onclick="dataSubmit()">가입하기</button>
-                  </div>
-                  <script>
-                    //form데이터 전송
-                    function dataSubmit() {
-                      var regImg = $("#ex_file")[0].files[0];
-
-                      var interestList = [];
-                      $('input[name="interest"]:checked').each(function (i) {
-                        interestList.push($(this).val());
-                      });
-
-                      var account = {
-                        email: $('#email').val(),
-                        password: $('#password').val(),
-                        nickname: $('#nickname').val(),
-                        introduce: $('#introduce').val(),
-                        interest: interestList
-                      };
-
-                      var formData = new FormData();
-
-                      formData.append("image", regImg);
-                      formData.append("account", new Blob([JSON.stringify(account)], {type: "application/json"}));
-
-                      $.ajax({
-                        url: "/createUser",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        enctype: 'multipart/form-data',
-                        type: "POST",
-                        success : function()
-                        {
-                          window.location = "/";
-                          alert("회원가입에 성공했습니다.");
-                        },
-                        error : function() {
-                          window.location = "/login";
-                          alert("회원가입에 실패했습니다.");
-                        }
-                      });
-                    }
-                  </script>
- -->			
+                 <div th:if="${_csrf} ne null" >
  				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+ 				</div>
                 </form>
 
               </div>
@@ -312,7 +159,16 @@
 
   </div>
 </main><!-- End #main -->
+<script type="text/javascript">
+function sub() {
+//	alert(document.getElementById("ex_file").value);
+	document.getElementById("ex_file").value = null;
+	document.getElementById("content").value = editor.getData();
+	//return true;
+	//return false;
+}
 
+</script>
 </body>
 
 </html>

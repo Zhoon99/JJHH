@@ -52,11 +52,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 			Nick = oAuth2User.getAttribute("login");
 			password = "gg";
 		}
-		
+		String role = "social";
 		Account userEntity = repository.findByEmail(email);
 
 		if (userEntity == null) {
-			userEntity = Account.builder().email(email).password(password).nick(Nick).provider_id(providerid)
+			userEntity = Account.builder().email(email).password(password).nick(Nick).provider_id(providerid).role(role)
 					.provider(provider).build();
 			repository.save(userEntity);
 
