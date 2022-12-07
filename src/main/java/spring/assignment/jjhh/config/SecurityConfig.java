@@ -30,7 +30,7 @@ public class SecurityConfig {
         
         http.csrf().disable();
 		http.authorizeRequests()
-				.antMatchers("/","/home","/log","/login/**","layout/**","/signUp").permitAll()
+				.antMatchers("/","/home","/log","/login/**","/new","layout/**","/signUp").permitAll()
 				.antMatchers("/user/**").authenticated()
 				.anyRequest().authenticated()
 				;
@@ -38,7 +38,7 @@ public class SecurityConfig {
         http.formLogin()
         	.loginPage("/login")
         	.loginProcessingUrl("/login/log")
-            .defaultSuccessUrl("/index")                       
+            .defaultSuccessUrl("/")                       
             .usernameParameter("email")  
             .failureUrl("/login/error")            
             .and()            
@@ -48,6 +48,7 @@ public class SecurityConfig {
             .and()
             .oauth2Login()
     		.loginPage("/login")
+    		.defaultSuccessUrl("/")
     		.userInfoEndpoint()
     		.userService(principalOauth2UserService);
 		

@@ -71,7 +71,7 @@
                         <img id="profile_img" onclick="fileRemove()" src="/assets/img/default_profile.jpg"
                              style="width:150px; height:150px; cursor:pointer; border-radius: 90%;">
                       </label>
-                      <input type="file" name="imgsw" id="ex_file" accept=".jpg, .png" 
+                      <input type="file" name="imgsw" id="ex_file" accept=".jpg, .png"
                              style="display: none;">
 
                       <span id='user_upload_img'></span>
@@ -134,13 +134,14 @@
                                             console.error(error);
                                         });
                                 </script>
-                                <textarea id="content" name="content" style="display: flex"></textarea>
+                                <textarea id="content" name="introduce" style="display: flex"></textarea>
                             </div>
                         </div>
                   
 					<div class="col-12 d-flex justify-content-center">
                     <button type="button" class="btn btn-dark btn-lg px-5" onclick="history.back()" style="margin-right: 20px">돌아가기</button>
-                    <button type="submit" class="btn btn-dark btn-lg px-5 ml-5">가입하기</button>
+                    <button type="submit" onclick="edit_set" class="btn btn-dark btn-lg px-5 ml-5" >가입하기</button>
+                    
                   </div>
                  <div th:if="${_csrf} ne null" >
  				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
@@ -158,6 +159,16 @@
 
   </div>
 </main><!-- End #main -->
+<script type="text/javascript">
+function sub() {
+//	alert(document.getElementById("ex_file").value);
+	document.getElementById("ex_file").value = null;
+	document.getElementById("content").value = editor.getData();
+	//return true;
+	//return false;
+}
+
+</script>
 </body>
 
 </html>

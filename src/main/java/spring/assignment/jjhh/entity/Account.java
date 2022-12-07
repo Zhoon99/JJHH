@@ -66,6 +66,7 @@ public class Account {
 		account.setNick(dto.getNick());
         String password = passwordEncoder.encode(dto.getPassword());
         account.setPassword(password);
+        account.setIntroduce(dto.getIntroduce());
         account.setRole(dto.getRole());
         account.setProfileImg(dto.getProfile_img());
         account.setProfileOriName(dto.getProfileOriName());

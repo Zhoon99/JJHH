@@ -45,9 +45,11 @@ public class ProfileService {
          String imgName = uuid.toString() + sourceFileName;
          String imgUrl = fileDir + "/" + imgName;
          
+         System.out.println("////////////////////////////////////");
          System.out.println(sourceFileName);
          System.out.println(imgName);
          System.out.println(imgUrl);
+         System.out.println("////////////////////////////////////");
          
 //         System.out.println("aa : " + fileDir);
          FileOutputStream fos = null;
