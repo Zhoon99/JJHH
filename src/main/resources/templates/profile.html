@@ -69,7 +69,7 @@
 
               <div class="card-body">
 
-                <div class="row mb-3">
+                <div class="row mb-3" style=" pointer-events: none;">
                             <label for="ckeditor" class="col-sm-12 col-form-label">readme</label>
                             <div class="col-sm-13">
                                         <textarea id="ckeditor" name="editor" placeholder=""
@@ -79,9 +79,11 @@
                                     let editor;
 
                                     ClassicEditor
-                                        .create(document.querySelector('#ckeditor'), {})
-                                        
-                                        
+                                        .create(document.querySelector('#ckeditor'), {
+                                        	toolbar: []
+                                       		
+                                        })
+                                       
                                         .then(newEditor => {
                                             editor = newEditor;
                                         })
@@ -90,23 +92,22 @@
                                             window.editor = editor;
 
                                         })
-                                        
+                                        .defaultConfig = {
+                                        	    toolbar: [ 'heading', '|', 'bold', 'italic', 'custombutton' ]
+                                        }
                                         .catch(error => {
                                             console.error('Oops, something went wrong!');
                                             console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
                                             console.warn('Build id: g64ljk55ssvc-goqlohse75uw');
                                             console.error(error);
                                         });
+                                    
+                                   
                                      
                                 </script>
-                                <textarea id="content" name="introduce" style="display: flex"></textarea>
+                                <textarea id="content" name="introduce" th:text="${account.introduce}" style="display: none"></textarea>
                             </div>
                         </div>
-                
-                <form class="row g-3 needs-validation" action="/new" method="post" novalidate>
-                	<p th:text="${account.introduce}"></p>
-                </form>
-
               </div>
             </div>
 
@@ -119,8 +120,14 @@
   </div>
 </main><!-- End #main -->
 <script type="text/javascript">
+$(document).ready(function(){
+	
+	let txt = document.getElementById("content").value;
 
-
+	editor.setData(txt);
+	//CKEDITOR.instances['editor'].setReadOnly(true);
+	//alert(txt);
+})
 </script>
 </body>
 
