@@ -70,10 +70,12 @@ public class ProfileController {
 		
 		Account ac = profileService.selrect_Acc(id);
 		ac.setNick(acc.getNick());
-		if(acc.getPassword() != null || !acc.getPassword().equals("") || !acc.getPassword().isEmpty()) {
+		if(acc.getPassword() != null) {
+			if(!acc.getPassword().equals("")) {
 			ps = passwordEncoder.encode(acc.getPassword());
 			System.out.println("YY");
 //			ac.setPassword(ps);
+			}
 		}
 		else System.out.println("NN");
 		ac.setIntroduce(acc.getIntroduce()); 
