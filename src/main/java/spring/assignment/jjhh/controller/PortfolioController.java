@@ -32,7 +32,6 @@ public class PortfolioController {
                          Authentication authentication) {
 
         PrincipalDatails userPrincipal = (PrincipalDatails) authentication.getPrincipal();
-        portfolioService.registPortpolio(portfolioDto, files, userPrincipal.getAccount());
+        portfolioService.registPortfolio(portfolioDto, files, userPrincipal.getAccount());
     }
-
 }

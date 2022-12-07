@@ -3,14 +3,15 @@ package spring.assignment.jjhh.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"portfolio"})
 @NoArgsConstructor
 @AllArgsConstructor
-public class TechStack {
+public class TechStack implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

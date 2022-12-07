@@ -22,7 +22,7 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().antMatchers("/assets/**", "/favicon.ico", "/resources/**", "/error","/images/**");
+		return (web) -> web.ignoring().antMatchers("/assets/**", "/favicon.ico", "/resources/**", "/error", "layout/**");
 	}
 	
 	@Bean
@@ -30,7 +30,7 @@ public class SecurityConfig {
         
         http.csrf().disable();
 		http.authorizeRequests()
-				.antMatchers("/","/home","/log","/login/**","/new","layout/**","/signUp").permitAll()
+				.antMatchers("/","/home","/log","/login/**","/new","/signUp").permitAll()
 				.antMatchers("/user/**").authenticated()
 				.anyRequest().authenticated()
 				;

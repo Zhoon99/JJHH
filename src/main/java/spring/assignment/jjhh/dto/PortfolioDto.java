@@ -29,4 +29,22 @@ public class PortfolioDto {
 
     }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Preview {
+
+        private Long id;
+        private String projectName;
+        private String introduce;
+        private String startDate;
+        private String lastDate;
+        private Integer views;
+
+        private List<TechStack> techStackList;
+        private List<Team> teamList;
+
+    }
+
 }

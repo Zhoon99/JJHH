@@ -34,8 +34,19 @@
     <div class="container" data-aos="zoom-in" data-aos-delay="100">
         <h1>Portfolio Manager</h1>
         <div class="searchBar">
-            <input class="searchBar-input" type="search" placeholder="클래스 검색하기!" spellcheck="false"/>
+            <input class="searchBar-input" type="search" id="search-bar" placeholder="클래스 검색하기!" spellcheck="false" onkeyup="search();"/>
         </div>
+        <script>
+            function search() {
+                if($("#search-bar").val().length > 0) {
+                    if(window.event.keyCode == 13) {
+                        window.location = "/search?s=" + $("#search-bar").val();
+                    }
+                } else {
+                    alert("검색어를 입력해주세요.")
+                }
+            }
+        </script>
     </div>
 </section><!-- End Hero -->
 
