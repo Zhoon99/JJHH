@@ -50,21 +50,25 @@ public class LoginController {
 	@PostMapping("/new")
     public String memberForm(AccountDto dto, 
             BindingResult bindingResult,
-            @RequestParam("imgsw") MultipartFile file,   Model model) {
-       
-       System.out.println("file : " + file); 
+            @RequestParam("imgsw") MultipartFile file,  Model model) {
+       if(file.isEmpty()) System.out.println("YYY"); 
+       else System.out.println("NNN");
+       System.out.println("file : " + dto.getIntroduce()); 
         if(bindingResult.hasErrors()) {
             return "member/memberForm";
         }
         
         try {
-        	Pro_ImageDto img = profileService.ImageSave(file);
-        	
+//        	if(img.getFileOriName)
+        	if(!file.isEmpty()) {
+	        	Pro_ImageDto img = profileService.ImageSave(file);
+	        	System.out.println("222 : " + file.getOriginalFilename());
+	        	String imgurl = "/images/" + img.getFileOriName();
+	        	System.out.println("image : " + imgurl);
+	        	dto.setProfile_img(imgurl);
+	        	dto.setProfileOriName(img.getFileOriName());
+        	}
 //        	String imgurl = "/assets/img/data/" + img.getFileOriName();
-        	String imgurl = "/images/" + img.getFileOriName();
-        	System.out.println(imgurl);
-        	dto.setProfile_img(imgurl);
-        	dto.setProfileOriName(img.getFileOriName());
         	dto.setRole("basic");
             Account createMember = Account.createAccount(dto, passwordEncoder);
             accountRepository.save(createMember);
