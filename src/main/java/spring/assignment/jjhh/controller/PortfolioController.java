@@ -66,7 +66,7 @@ public class PortfolioController {
     @ResponseBody
     public void modifyPortfolio(@RequestPart(value = "portfolio") PortfolioDto.Request portfolioDto,
                                 @RequestPart(value = "file", required = false) MultipartFile[] files) {
-
+    	System.out.println(portfolioDto.getIntroduce());
         portfolioService.modifyPortfolio(portfolioDto, files);
     }
 	@PostMapping("/portfolio/detail/delete")

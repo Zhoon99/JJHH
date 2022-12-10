@@ -408,7 +408,7 @@
                     formData.append("portfolio", new Blob([JSON.stringify(portfolio)], {type: "application/json"}));
 
                     $.ajax({
-                        url: "/user/portfolio/modify",
+                        url: "/user/portfolio/register/modify",
                         data: formData,
                         processData: false,
                         contentType: false,
