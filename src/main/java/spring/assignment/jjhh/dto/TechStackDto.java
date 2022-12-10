@@ -24,9 +24,10 @@ public class TechStackDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class RequestList {
+    public static class Response {
 
-        private List<Request> techStackList;
+        private Long id;
+        private String techName;
 
     }
 }

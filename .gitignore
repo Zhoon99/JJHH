@@ -32,9 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
-
-!/src/main/resources/application-db.properties
-!/src/main/resources/application-oauth.properties
+!**/src/main/resources/static/data/
+!**/src/main/resources/static/images/
 
 application-db.properties
 application-oauth.properties

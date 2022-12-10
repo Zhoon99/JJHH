@@ -44,9 +44,9 @@ public class PortfolioDto {
         private String readme;
         private String disclosure;
         private AccountResponse writer;
-        private List<TechStackDto.Request> techStackList;
-        private List<TeamDto.Request> teamList;
-        private List<FileDto.Request> fileList;
+        private List<TechStackDto.Response> techStackList;
+        private List<TeamDto.Response> teamList;
+        private List<FileDto.Response> fileList;
 
     }
 

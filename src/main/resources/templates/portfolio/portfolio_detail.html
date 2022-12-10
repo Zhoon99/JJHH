@@ -135,21 +135,16 @@
                                         <p class="nickname mt-3" th:text="${portfolio.getWriter().getNick()}">err</p>
                                     </a>
                                 </div>
-<!--                     		<form action="/portfolio/detail/delete" method="post">
-                    		<input type="text" name="pId" th:value="${portfolio.getId()}">
-							<button type="submit">삭제</button>
-							</form>
-							-->
+
+                                <div th:if="${#authentication.principal.account.accountId} == ${portfolio.getWriter().getAccountId()}" style="margin-top: 40px;">
+                                    <a th:href="@{/user/portfolio/register/modify(pId=${portfolio.getId()})}"><button type="button" class="btn btn-secondary">수정</button></a>
+                                    <a href=""><button type="button" class="btn btn-danger">삭제</button></a>
 					
-					<!--  <a href="/portfolio/detail/delete">aaaa</a> -->
-					<form action="/portfolio/detail/delete" method="post">
                     		<input type="hidden" name="pId" th:value="${portfolio.getId()}">
                                 <div th:if="${#authentication.principal.account.accountId} == ${portfolio.getWriter().getAccountId()}">
                                     <button type="button" class="btn btn-secondary">수정</button>
                                     <button type="submit" class="btn btn-danger">삭제</button>
                                 </div>
-                     </form>
-
                             </div>
                         </div>
 
