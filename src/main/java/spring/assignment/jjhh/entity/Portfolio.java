@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(exclude = {"account","fileList","techStackList","teamList","commentList"})
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Portfolio extends BaseEntity implements Serializable {

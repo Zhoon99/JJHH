@@ -59,18 +59,19 @@ public class PortfolioController {
         return readme;
     }
 
-    @GetMapping("/user/portfolio/register/modify")
+    @GetMapping("/user/portfolio/modify")
     public String modifyPortfolio(@RequestParam Long pId, Model model) {
         PortfolioDto.Response portfolioDetail = portfolioService.getPortfolioDetail(pId);
         model.addAttribute("portfolio", portfolioDetail);
         return "portfolio/portfolio_modify";
     }
 
-    @PostMapping("/user/portfolio/register/modify")
+    @PostMapping("/user/portfolio/modify")
     @ResponseBody
-    public void modifyPortfolio(@RequestPart(value = "portfolio") PortfolioDto.Request portfolioDto,
+    public void modifyPortfolio(@RequestPart(value = "portfolio") PortfolioDto.Response portfolioDto,
                                 @RequestPart(value = "file", required = false) MultipartFile[] files) {
 
+        log.info(portfolioDto.toString());
         portfolioService.modifyPortfolio(portfolioDto, files);
     }
 
