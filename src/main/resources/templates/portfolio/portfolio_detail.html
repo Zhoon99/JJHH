@@ -122,7 +122,8 @@
             <div class="card-body px-5 fw-bold">
                 <div class="reg-split">
                     <div class="page-1 px-1">
-                        <div class="detail-header">
+							<div class="detail-header">
+							
                             <h5 class="project-name" th:text="${portfolio.getProjectName()}">err</h5>
                             <div class="ms-auto">
 
@@ -138,8 +139,12 @@
                                 <div th:if="${#authentication.principal.account.accountId} == ${portfolio.getWriter().getAccountId()}" style="margin-top: 40px;">
                                     <a th:href="@{/user/portfolio/register/modify(pId=${portfolio.getId()})}"><button type="button" class="btn btn-secondary">수정</button></a>
                                     <a href=""><button type="button" class="btn btn-danger">삭제</button></a>
+					
+                    		<input type="hidden" name="pId" th:value="${portfolio.getId()}">
+                                <div th:if="${#authentication.principal.account.accountId} == ${portfolio.getWriter().getAccountId()}">
+                                    <button type="button" class="btn btn-secondary">수정</button>
+                                    <button type="submit" class="btn btn-danger">삭제</button>
                                 </div>
-
                             </div>
                         </div>
 

@@ -69,4 +69,11 @@ public class PortfolioController {
 
         portfolioService.modifyPortfolio(portfolioDto, files);
     }
+	@PostMapping("/portfolio/detail/delete")
+	public String PortfolioDelete(@RequestParam(value = "pId") String id) {
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		Long lo = Long.parseLong(id); 
+		portfolioRepository.deleteById(lo);
+		return "redirect:/";
+	}
 }
