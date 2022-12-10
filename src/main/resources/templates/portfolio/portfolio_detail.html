@@ -132,12 +132,21 @@
 					<!--  <a href="/portfolio/detail/delete">aaaa</a> -->
                             <h5 class="project-name" th:text="${portfolio.getProjectName()}">err</h5>
                             <div class="ms-auto">
-                                <a class="profile-wrap" th:href="'/user/profile?id=' + ${portfolio.getWriter().getAccountId()}">
-                                    <div>
-                                        <img th:src="${portfolio.getWriter().getProfile_img()}" class="profile_img">
-                                    </div>
-                                    <p class="nickname mt-3" th:text="${portfolio.getWriter().getNick()}">err</p>
-                                </a>
+
+                                <div th:if="${#authentication.principal.account.accountId} != ${portfolio.getWriter().getAccountId()}">
+                                    <a class="profile-wrap" th:href="'/user/profile?id=' + ${portfolio.getWriter().getAccountId()}">
+                                        <div>
+                                            <img th:src="${portfolio.getWriter().getProfile_img()}" class="profile_img">
+                                        </div>
+                                        <p class="nickname mt-3" th:text="${portfolio.getWriter().getNick()}">err</p>
+                                    </a>
+                                </div>
+
+                                <div th:if="${#authentication.principal.account.accountId} == ${portfolio.getWriter().getAccountId()}">
+                                    <button type="button" class="btn btn-secondary">수정</button>
+                                    <button type="button" class="btn btn-danger">삭제</button>
+                                </div>
+
                             </div>
                         </div>
 

@@ -61,7 +61,6 @@ public class PortfolioController {
 	@GetMapping("/user/portfolio/register/edit")
 	public String getprofloDeteail(@RequestParam Long p, Model model) {
 		PortfolioDto.Response portfolioDetail = portfolioService.getPortfolioDetail(p);
-		System.out.println(portfolioDetail.getId());
 		model.addAttribute("portfolio", portfolioDetail);
 		return "portfolio/portfolio_register_edit";
 	}
