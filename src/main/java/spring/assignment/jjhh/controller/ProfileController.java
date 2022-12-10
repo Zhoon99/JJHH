@@ -1,8 +1,10 @@
 package spring.assignment.jjhh.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.hibernate.internal.build.AllowSysOut;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,9 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import spring.assignment.jjhh.dto.PortfolioDto;
 import spring.assignment.jjhh.dto.Pro_ImageDto;
 import spring.assignment.jjhh.entity.Account;
 import spring.assignment.jjhh.repository.AccountRepository;
+import spring.assignment.jjhh.service.PortfolioService;
 import spring.assignment.jjhh.service.PrincipalDatails;
 import spring.assignment.jjhh.service.ProfileService;
 
@@ -32,6 +36,8 @@ public class ProfileController {
 	private final AccountRepository accountRepository;
 	
 	private final PasswordEncoder passwordEncoder;
+
+	private final PortfolioService portfolioService;
 
 	@GetMapping("/user/profile")
 	public String my_profile(@RequestParam("id") Long id, @AuthenticationPrincipal PrincipalDatails principalDatails, Model model) {
@@ -90,6 +96,18 @@ public class ProfileController {
 		
 		//model.addAttribute("account", acc);
 		return "redirect:/";
+	}
+
+	@GetMapping("/user/profile/myPortfolio")
+	public String myPortfolio(Model model, Authentication authentication) {
+
+		PrincipalDatails userPrincipal = (PrincipalDatails) authentication.getPrincipal();
+
+		List<PortfolioDto.Preview> myPortfolioPreview = portfolioService.getMyPortfolioPreview(userPrincipal.getAccount().getAccountId());
+		if (myPortfolioPreview.size() > 0) {
+			model.addAttribute("preview",myPortfolioPreview);
+		}
+		return "profile_myportfolio";
 	}
 	
 }

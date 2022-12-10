@@ -43,19 +43,9 @@ public class PortfolioController {
 
     @GetMapping("/portfolio/detail")
     public String detail(@RequestParam Long p, Model model) {
-        Optional<Portfolio> portfolio = portfolioRepository.findById(p);
+        PortfolioDto.Response portfolioDetail = portfolioService.getPortfolioDetail(p);
 
-        ModelMapper modelMapper = new ModelMapper();
-        PortfolioDto.Response portfolioInfo = modelMapper.map(portfolio.get(), PortfolioDto.Response.class);
-
-        AccountResponse accountResponse = AccountResponse.builder()
-                .accountId(portfolio.get().getAccount().getAccountId())
-                .nick(portfolio.get().getAccount().getNick())
-                .profile_img(portfolio.get().getAccount().getProfileImg())
-                .build();
-        portfolioInfo.setWriter(accountResponse);
-
-        model.addAttribute("portfolio", portfolioInfo);
+        model.addAttribute("portfolio", portfolioDetail);
         return "portfolio/portfolio_detail";
     }
 

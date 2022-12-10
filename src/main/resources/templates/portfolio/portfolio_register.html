@@ -68,7 +68,7 @@
 <body>
 
 <!-- ======= Header ======= -->
-<header th:replace="layout/header::header"></header>
+<header th:replace="layout/header::header('portfolio')"></header>
 
 <main id="main" class="main">
     <section class="section">
@@ -392,9 +392,6 @@
                         }
                     });
 
-                    alert(techStack);
-                    alert(JSON.stringify(memberRoleList));
-
                     var portfolio = {
                         projectName: $('#projectName').val(),
                         introduce: $('#introduce').val(),
@@ -423,11 +420,11 @@
                         enctype: 'multipart/form-data',
                         type: "POST",
                         success: function () {
-                            // window.location = "/";
+                            window.location = "/user/profile/myPortfolio";
                             alert("포트폴리오 등록에 성공했습니다.");
                         },
                         error: function () {
-                            // window.location = "/";
+                            window.location = "/user/portfolio/register";
                             alert("포트폴리오 등록에 실패했습니다.");
                         }
                     });
