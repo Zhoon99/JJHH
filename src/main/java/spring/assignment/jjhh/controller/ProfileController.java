@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.internal.build.AllowSysOut;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,9 +53,6 @@ public class ProfileController {
 		System.out.println("aaa:" + principalDatails.getid());
 		model.addAttribute("account", acc);
 		Long l = (long) 1;
-		model.addAttribute("data", "C:\\Users\\gldht\\git\\JJHH2/src/main/resources/static/data/270ef4e9-ed41-4a89-8533-1f9316d4848eicon.jpg");
-//	    File file = fileRepository.findById(l);
-//		System.out.println(file.get);
 		return "profile";
 	}
 	
@@ -112,15 +113,22 @@ public class ProfileController {
 	}
 
 	@GetMapping("/user/profile/myPortfolio")
-	public String myPortfolio(Model model, Authentication authentication) {
+	public String myPortfolio(Model model, Authentication authentication, @PageableDefault(size = 4) Pageable pageable) {
 
 		PrincipalDatails userPrincipal = (PrincipalDatails) authentication.getPrincipal();
+		Page<PortfolioDto.Preview> myPortfolioPreview = portfolioService.getMyPortfolioPreview(userPrincipal.getAccount().getAccountId(), pageable);
 
-		List<PortfolioDto.Preview> myPortfolioPreview = portfolioService.getMyPortfolioPreview(userPrincipal.getAccount().getAccountId());
-		if (myPortfolioPreview.size() > 0) {
+		if (!myPortfolioPreview.isEmpty()) {
+			int startPage = Math.max(1, myPortfolioPreview.getPageable().getPageNumber() - 4);
+			int endPage = Math.min(myPortfolioPreview.getTotalPages(), myPortfolioPreview.getPageable().getPageNumber() + 4);
+
+			model.addAttribute("startPage", startPage);
+			model.addAttribute("endPage", endPage);
 			model.addAttribute("preview",myPortfolioPreview);
+			return "profile_myportfolio";
+		} else {
+			return "profile_myportfolio_error";
 		}
-		return "profile_myportfolio";
 	}
 
 }

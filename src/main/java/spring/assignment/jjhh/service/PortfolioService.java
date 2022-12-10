@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,31 +66,39 @@ public class PortfolioService {
 
     @Transactional
     public void registPortfolio(PortfolioDto.Request portfolioDto, MultipartFile[] files, Account account) {
+        ModelMapper modelMapper = new ModelMapper();
+
+        Portfolio portfolio = modelMapper.map(portfolioDto, Portfolio.class);
+        portfolio.registInit(0, account);
+        portfolioRepository.save(portfolio);
+
+        List<TechStack> techStackList = new ArrayList<>();
+        portfolioDto.getTechStackList().forEach(element -> {
+            TechStack techStack = modelMapper.map(element, TechStack.class);
+            techStack.setPortfolio(portfolio);
+            techStackList.add(techStack);
+        });
+        techStackRepository.saveAll(techStackList);
+
+        List<Team> teamList = new ArrayList<>();
+        portfolioDto.getTeamList().forEach(element -> {
+            Team team = modelMapper.map(element, Team.class);
+            team.setPortfolio(portfolio);
+            teamList.add(team);
+        });
+        teamRepository.saveAll(teamList);
+
         if(files != null && files.length > 0) {
             //파일 저장
 
-            ModelMapper modelMapper = new ModelMapper();
-
-            Portfolio portfolio = modelMapper.map(portfolioDto, Portfolio.class);
-            portfolio.registInit(0, account);
-            portfolioRepository.save(portfolio);
-
-            List<TechStack> techStackList = new ArrayList<>();
-            portfolioDto.getTechStackList().forEach(element -> {
-                TechStack techStack = modelMapper.map(element, TechStack.class);
-                techStack.setPortfolio(portfolio);
-                techStackList.add(techStack);
-            });
-            techStackRepository.saveAll(techStackList);
-
-           List<File> fileList = new ArrayList<>();
+//           List<File> fileList = new ArrayList<>();
            File file;
            for(int i = 0; i < files.length; i++) {
         	   file = new File();
 //        	   portfolioService.filesave(rootPath, files[i].getOriginalFilename(), files[i].getBytes());
         	   UUID uuid = UUID.randomUUID();
 
-               String imgName = uuid.toString() + files[i].getOriginalFilename();
+               String imgName = uuid + files[i].getOriginalFilename();
                String fileDir = rootPath + "/src/main/resources/static/data";
                String fileUploadFullUrl = fileDir + "/" + imgName;
 
@@ -103,41 +112,31 @@ public class PortfolioService {
             	   System.out.println("에러");
                }
 
-
         	   file.setPortfolio(portfolio);
         	   file.setPath(filepath);
 	           file.setUuid(uuid.toString());
 	           file.setFileName(files[i].getOriginalFilename());
 	           fileRepository.save(file);
            }
-
-
-            List<Team> teamList = new ArrayList<>();
-            portfolioDto.getTeamList().forEach(element -> {
-                Team team = modelMapper.map(element, Team.class);
-                team.setPortfolio(portfolio);
-                teamList.add(team);
-            });
-            teamRepository.saveAll(teamList);
         }
     }
 
     @Transactional
-    public List<PortfolioDto.Preview> getSearchedPortfolioPreview(String s) {
-        PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(Sort.Direction.DESC, "regDate"));
+    public Page<PortfolioDto.Preview> getSearchedPortfolioPreview(String s, Pageable pageable) {
+//        PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(Sort.Direction.DESC, "regDate"));
 
-        Page<Portfolio> searchedPortfolio = portfolioRepository.searchPublicPortfolio(s, pageRequest);
+        Page<Portfolio> searchedPortfolio = portfolioRepository.searchPublicPortfolio(s, pageable);
 
-        return getPreview(searchedPortfolio);
+        return getPreviewPage(searchedPortfolio);
     }
 
     @Transactional
-    public List<PortfolioDto.Preview> getMyPortfolioPreview(Long accountId) {
-        PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(Sort.Direction.DESC, "regDate"));
+    public Page<PortfolioDto.Preview> getMyPortfolioPreview(Long accountId, Pageable pageable) {
+//        PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(Sort.Direction.DESC, "regDate"));
 
-        Page<Portfolio> searchedPortfolio = portfolioRepository.getMyPortfolio(accountId, pageRequest);
+        Page<Portfolio> searchedPortfolio = portfolioRepository.getMyPortfolio(accountId, pageable);
 
-        return getPreview(searchedPortfolio);
+        return getPreviewPage(searchedPortfolio);
     }
 
     private List<PortfolioDto.Preview> getPreview(Page<Portfolio> portfolioList) {
@@ -158,6 +157,23 @@ public class PortfolioService {
             previewList.add(preview);
         });
 
+        return previewList;
+    }
+
+    private Page<PortfolioDto.Preview> getPreviewPage(Page<Portfolio> portfolioList) {
+        Page<PortfolioDto.Preview> previewList = portfolioList.map(element ->
+                PortfolioDto.Preview.builder()
+                        .id(element.getId())
+                        .projectName(element.getProjectName())
+                        .introduce(element.getIntroduce())
+                        .startDate(element.getStartDate())
+                        .lastDate(element.getLastDate())
+                        .views(element.getViews())
+                        .disclosure(element.getDisclosure())
+                        .regDate(element.getRegDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")))
+                        .techStackList(element.getTechStackList())
+                        .teamList(element.getTeamList())
+                        .build());
         return previewList;
     }
 

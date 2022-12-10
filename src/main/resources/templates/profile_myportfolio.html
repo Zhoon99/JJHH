@@ -85,7 +85,7 @@
                 </div>
             </div>
 
-            <div class="result-count" th:text="${preview.size()} + '개의 결과'"></div>
+            <div class="result-count" th:text="${preview.getTotalElements} + '개의 결과'"></div>
             <div class="portfolio-result" th:each="el, i: ${preview}">
 
                 <a th:href="'/portfolio/detail?p=' + ${el.getId()}">
@@ -109,18 +109,18 @@
 
         </div>
 
-        <nav class="page-nav">
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center">
             <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
+                <li class="page-item" th:classappend="${1 == preview.pageable.pageNumber + 1}? 'disabled'">
+                    <a class="page-link" href="#" th:href="@{/user/profile/myPortfolio(page=${preview.pageable.pageNumber - 1})}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
+                <li class="page-item" th:classappend="${i == preview.pageable.pageNumber + 1}? 'disabled'" th:each="i: ${#numbers.sequence(startPage, endPage)}">
+                    <a class="page-link" href="#" th:text="${i}" th:href="@{/user/profile/myPortfolio(page=${i - 1})}">err</a>
+                </li>
+                <li class="page-item" th:classappend="${preview.totalPages == preview.pageable.pageNumber + 1}? 'disabled'">
+                    <a class="page-link" href="#" th:href="@{/user/profile/myPortfolio(page=${preview.pageable.pageNumber + 1})}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

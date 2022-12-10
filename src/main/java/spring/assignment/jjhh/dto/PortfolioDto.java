@@ -46,6 +46,7 @@ public class PortfolioDto {
         private AccountResponse writer;
         private List<TechStackDto.Request> techStackList;
         private List<TeamDto.Request> teamList;
+        private List<FileDto.Request> fileList;
 
     }
 
