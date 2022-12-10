@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import spring.assignment.jjhh.dto.Port_File_Dto;
+import spring.assignment.jjhh.dto.AccountResponse;
 import spring.assignment.jjhh.dto.PortfolioDto;
 import spring.assignment.jjhh.entity.Account;
 import spring.assignment.jjhh.entity.File;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -41,20 +43,20 @@ public class PortfolioService {
     private final FileRepository fileRepository;
     private final TeamRepository teamRepository;
     private final String rootPath = System.getProperty("user.dir");
-    
-    
+
+
     public Port_File_Dto filesave(String uploadPath, String originalFileName, byte[] fileData) throws IOException {
-    	
-    	
+
+
     	UUID uuid = UUID.randomUUID();
         String imgName = uuid.toString() + originalFileName;
         String fileDir = uploadPath + "/src/main/resources/static/data";
         String fileUploadFullUrl = fileDir + "/" + imgName;
-        
+
         System.out.println(fileDir);
         System.out.println(imgName);
         System.out.println(fileUploadFullUrl);
-        
+
         FileOutputStream fos = new FileOutputStream(fileUploadFullUrl);
         fos.write(fileData);
         fos.close();
@@ -64,7 +66,7 @@ public class PortfolioService {
     @Transactional
     public void registPortfolio(PortfolioDto.Request portfolioDto, MultipartFile[] files, Account account) {
         if(files != null && files.length > 0) {
-            //파일 저장 
+            //파일 저장
 
             ModelMapper modelMapper = new ModelMapper();
 
@@ -79,18 +81,18 @@ public class PortfolioService {
                 techStackList.add(techStack);
             });
             techStackRepository.saveAll(techStackList);
-            
+
            List<File> fileList = new ArrayList<>();
            File file;
            for(int i = 0; i < files.length; i++) {
         	   file = new File();
 //        	   portfolioService.filesave(rootPath, files[i].getOriginalFilename(), files[i].getBytes());
         	   UUID uuid = UUID.randomUUID();
-        	   
+
                String imgName = uuid.toString() + files[i].getOriginalFilename();
                String fileDir = rootPath + "/src/main/resources/static/data";
                String fileUploadFullUrl = fileDir + "/" + imgName;
-        	   
+
                String filepath = "/data/" + imgName;
                FileOutputStream fos;
                try {
@@ -100,16 +102,16 @@ public class PortfolioService {
                } catch (Exception e) {
             	   System.out.println("에러");
                }
-               
-               
+
+
         	   file.setPortfolio(portfolio);
         	   file.setPath(filepath);
 	           file.setUuid(uuid.toString());
 	           file.setFileName(files[i].getOriginalFilename());
 	           fileRepository.save(file);
            }
-           
-            
+
+
             List<Team> teamList = new ArrayList<>();
             portfolioDto.getTeamList().forEach(element -> {
                 Team team = modelMapper.map(element, Team.class);
@@ -121,13 +123,26 @@ public class PortfolioService {
     }
 
     @Transactional
-    public List<PortfolioDto.Preview> getPortfolioPreview(String s) {
-        PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(Sort.Direction.DESC, "modDate"));
+    public List<PortfolioDto.Preview> getSearchedPortfolioPreview(String s) {
+        PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(Sort.Direction.DESC, "regDate"));
 
         Page<Portfolio> searchedPortfolio = portfolioRepository.searchPublicPortfolio(s, pageRequest);
 
+        return getPreview(searchedPortfolio);
+    }
+
+    @Transactional
+    public List<PortfolioDto.Preview> getMyPortfolioPreview(Long accountId) {
+        PageRequest pageRequest = PageRequest.of(0, 2, Sort.by(Sort.Direction.DESC, "regDate"));
+
+        Page<Portfolio> searchedPortfolio = portfolioRepository.getMyPortfolio(accountId, pageRequest);
+
+        return getPreview(searchedPortfolio);
+    }
+
+    private List<PortfolioDto.Preview> getPreview(Page<Portfolio> portfolioList) {
         List<PortfolioDto.Preview> previewList = new ArrayList<>();
-        searchedPortfolio.forEach(element -> {
+        portfolioList.forEach(element -> {
             PortfolioDto.Preview preview = PortfolioDto.Preview.builder()
                     .id(element.getId())
                     .projectName(element.getProjectName())
@@ -144,5 +159,24 @@ public class PortfolioService {
         });
 
         return previewList;
+    }
+
+    @Transactional
+    public PortfolioDto.Response getPortfolioDetail(Long portfolioId) {
+        Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
+
+        ModelMapper modelMapper = new ModelMapper();
+        PortfolioDto.Response portfolioInfo = modelMapper.map(portfolio.get(), PortfolioDto.Response.class);
+
+        AccountResponse accountResponse = AccountResponse.builder()
+                .accountId(portfolio.get().getAccount().getAccountId())
+                .nick(portfolio.get().getAccount().getNick())
+                .profile_img(portfolio.get().getAccount().getProfileImg())
+                .build();
+        portfolioInfo.setWriter(accountResponse);
+
+        portfolioRepository.updateViews(portfolio.get().getId());
+
+        return portfolioInfo;
     }
 }

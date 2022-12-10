@@ -7,8 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import spring.assignment.jjhh.dto.PortfolioDto;
-import spring.assignment.jjhh.entity.Portfolio;
-import spring.assignment.jjhh.repository.PortfolioRepository;
 import spring.assignment.jjhh.service.PortfolioService;
 
 import java.util.List;
@@ -21,7 +19,7 @@ public class SearchController {
 
     @GetMapping("/search")
     public String searchPortfolio(@RequestParam String s, Model model) {
-        List<PortfolioDto.Preview> searchedPortfolio = portfolioService.getPortfolioPreview(s);
+        List<PortfolioDto.Preview> searchedPortfolio = portfolioService.getSearchedPortfolioPreview(s);
         if (searchedPortfolio.size() > 0) {
             model.addAttribute("search",searchedPortfolio);
         } else {

@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<div th:fragment="header">
+<div th:fragment="header(select)">
 
     <!-- ======= Mobile nav toggle button ======= -->
     <i class="bi bi-list mobile-nav-toggle d-lg-none"></i>
@@ -11,9 +11,9 @@
 
         <nav id="navbar" class="navbar nav-menu">
             <ul>
-                <li><a href="/" class="nav-link scrollto active my-4"><i class="bx bx-home"></i> <span>Home</span></a></li>
-                <li><a href="/user/portfolio/register" class="nav-link scrollto my-4"><i class="bx bx-book-content"></i> <span>Portfolio</span></a></li>
-                <li sec:authorize="isAuthenticated()"><a onclick="aa()" th:href="@{/user/profile(id=${#authentication.principal.account.accountId})}" class="nav-link scrollto my-4"><i class="bx bx-user"></i><span>Profile</span></a></li>
+                <li><a href="/" class="nav-link scrollto my-4" th:classappend="${select} == 'home'? 'active'"><i class="bx bx-home"></i> <span>Home</span></a></li>
+                <li><a href="/user/portfolio/register" class="nav-link scrollto my-4" th:classappend="${select} == 'portfolio'? 'active'"><i class="bx bx-book-content"></i> <span>Portfolio</span></a></li>
+                <li sec:authorize="isAuthenticated()"><a onclick="aa()" th:href="@{/user/profile(id=${#authentication.principal.account.accountId})}" class="nav-link scrollto my-4" th:classappend="${select} == 'profile'? 'active'"><i class="bx bx-user"></i><span>Profile</span></a></li>
                 <li sec:authorize="isAnonymous()"><a onclick="aa()" href="/login" class="nav-link scrollto my-4"><i class="bx bx-user"></i><span>Profile</span></a></li>
             </ul>
             

@@ -22,7 +22,7 @@
 </style>
 
 <body>
-<header th:replace="layout/header::header"></header>
+<header th:replace="layout/header::header('profile')"></header>
 <main>
   <div class="container">
 
@@ -46,23 +46,23 @@
                 </div>
 
                 <hr>
-                <form class="row g-3 needs-validation" th:action="@{/user/profile/edit/{id}(id = ${account.accountId})}" method="post" 
+                <form class="row g-3 needs-validation" th:action="@{/user/profile/edit/{id}(id = ${account.accountId})}" method="post"
                 onsubmit="return psck();" enctype="multipart/form-data" novalidate>
 
 				<div class="col-12 ">
                     <label class="control-label" style="margin-left: 370">프로필 이미지</label><br>
                     <div style="display:inline; margin-left: 350">
                       <label th:if="${account.profileImg}" for="ex_file">
-                        <img id="profile_img" alt="/assets/img/default_profile.jpg" th:src="${account.profileImg}" 
+                        <img id="profile_img" alt="/assets/img/default_profile.jpg" th:src="${account.profileImg}"
                         onclick="fileRemove()" style="width:150px; height:150px; cursor:pointer; border-radius: 90%;">
                       </label>
-                      
+
                       <label th:unless="${account.profileImg}" for="ex_file">
-                        <img id="profile_img" alt="" src="/assets/img/default_profile.jpg" 
+                        <img id="profile_img" alt="" src="/assets/img/default_profile.jpg"
                         onclick="fileRemove()" style="width:150px; height:150px; cursor:pointer; border-radius: 90%;">
                       </label>
-                      
-                      <input type="file" name="imgsw" id="ex_file" accept=".jpg, .png" 
+
+                      <input type="file" name="imgsw" id="ex_file" accept=".jpg, .png"
                              style="display: none;">
 
                       <span id='user_upload_img'></span>
@@ -70,26 +70,26 @@
                   </div>
                   <script>
                     var fileInfoArr = [];
-                   	
+
                     let filetag = document.querySelector("input[name=imgsw]");
                    	filetag.onchange = function() {
                    		let imgTag = document.querySelector("#profile_img");
-                   		
+
                    		if(filetag.files.length > 0) {
                    			let reader = new FileReader();
-                   			
+
                    			reader.onload = function(data) {
-                   				//alert(data); 
+                   				//alert(data);
                    				imgTag.src = data.target.result;
                    			}
                    			reader.readAsDataURL(filetag.files[0]);
                    		} else {
                    			imgTag.src = "";
-                   		} 
-                   			
-                   		
+                   		}
+
+
                    	};
-                      
+
                   </script>
 
                   <div class="col-12">
@@ -105,7 +105,7 @@
                            placeholder="변경할 비밀번호를 입력해주세요!" data-minlength="6" required>
                     <div class="invalid-feedback">변경할 비밀번호를 입력해주세요!</div>
                   </div>
-                  
+
                   <div th:if="${account.role == 'basic'}" class="col-12">
                     <label for="password" class="form-label">변경할 비밀번호 확인</label>
                     <input type="password" class="form-control" name="" id="password2" value=""
@@ -142,7 +142,7 @@
                                 <textarea id="content" name="introduce" th:text="${account.introduce}" style="display: none"></textarea>
                             </div>
                         </div>
-                  
+
 					<div class="col-12 d-flex justify-content-center">
 					<input type="text" id="role" style="display: none" th:value="${account.role}">
                     <button type="button" class="btn btn-dark btn-lg px-5" onclick="history.back()" style="margin-right: 20px">돌아가기</button>
@@ -166,29 +166,29 @@
 </main><!-- End #main -->
 <script type="text/javascript">
 $(document).ready(function(){
-	
+
 	let txt = document.getElementById("content").value;
 
 	editor.setData(txt);
 })
 
 function psck() {
-	
+
 	if(document.getElementById("role") == "basic") {
-	
+
 	let ps1 = document.getElementById("password1").value;
 	let ps2 = document.getElementById("password2").value;
-	
+
 		if(ps1 != ps2) {
 			alert("두 비밀번호가 서로 다릅니다. 다시 확인해주세요.");
 			return false;
 		}
-		
+
 		if(ps1 == "") ps1 = "";
 		if(ps1 == null) ps1="";
 	}
 	document.getElementById("content").value = editor.getData();
-	
+
 	//return false;
 }
 </script>
