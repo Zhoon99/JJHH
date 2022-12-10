@@ -21,4 +21,17 @@ public class FileDto {
 
     }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Response {
+
+        private Long id;
+        private String path;
+        private String uuid;
+        private String fileName;
+
+    }
+
 }

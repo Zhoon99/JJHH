@@ -63,6 +63,13 @@
     .none-border input:focus {
         outline: none;
     }
+
+    .file-download {
+        background-color: #adb5bd;
+        color: black;
+        border: 2px solid #000000;
+        padding: 2px 10px;
+    }
 </style>
 
 <body>
@@ -94,7 +101,7 @@
                                     <span class="introduceTextTotal">/150자</span>
                                 </div>
                                 <textarea class="form-control" placeholder="150자 이내로 입력해주세요" name="introduce"
-                                          id="introduce" th:text="${portfolio.getIntroduce()}" 
+                                          id="introduce" th:text="${portfolio.getIntroduce()}"
                                           maxlength="150" style="height: 100px; resize: none;"
                                           required></textarea>
 
@@ -153,37 +160,17 @@
                                 <div class="col-sm-10">
 
                                     <div class="row row-cols-3" id="techStack-result">
+                                        <div class="col" th:each="el, i: ${portfolio.getTechStackList()}">
+                                            <i class="bi bi-x-lg d-flex justify-content-end" style="cursor:pointer;" onclick="removeTech(this)"></i>
+                                            <input type='text' class='form-control' name="techStack" th:value="${el.getTechName()}">
+                                        </div>
                                     </div>
-									
-									<div th:each="el, i: ${portfolio.getTechStackList()}">
-										
-									
-									<script>	
-										const result = document.getElementById('techStack-result');
-	
-	                                    let html = "";
-	                                    html += "<div class=\"col\">" +
-	                                        "<i class=\"bi bi-x-lg d-flex justify-content-end\" style=\"cursor:pointer;\" onclick=\"removeTech(this)\"></i>" +
-	                                        "<input type='text' class='form-control'" + "th:text=" + "${el.getTechName()}" + "name=\"techStack\">" +
-	                                        "</div>"
-	                                    result.insertAdjacentHTML("beforeend", html);
-									</script>
-									</div>
 
                                     <label class="d-flex justify-content-center align-items-end">
                                         <div class="fw-bold" style="cursor:pointer;" onclick="insertTech()">
                                             기술 스택 추가 ▼
                                         </div>
                                     </label>
-                                    
-                                    
-                                    <div class="row row-cols-4">
-                                    <div th:each="el, i: ${portfolio.getTechStackList()}">
-                                        <div class="tech-tag">
-                                            <p class="tech-name" th:text="${el.getTechName()}"></p>
-                                        </div>
-                                    </div>
-                                	</div>
 
                                     <script>
                                         function insertTech() {
@@ -191,7 +178,7 @@
 
                                             let html = "";
                                             html += "<div class=\"col\">" +
-                                                "<i class=\"bi bi-x-lg d-flex justify-content-end\"  style=\"cursor:pointer;\" onclick=\"removeTech(this)\"></i>" +
+                                                "<i class=\"bi bi-x-lg d-flex justify-content-end\" style=\"cursor:pointer;\" onclick=\"removeTech(this)\"></i>" +
                                                 "<input type='text' class='form-control' name=\"techStack\">" +
                                                 "</div>"
                                             result.insertAdjacentHTML("beforeend", html);
@@ -224,6 +211,16 @@
                                         </tr>
                                         </thead>
                                         <tbody id="memberRole-result">
+                                            <tr th:each="el, i: ${portfolio.getTeamList()}">
+                                                <td width="30%">
+                                                    <input class='none-border form-control' type='text' placeholder="팀 원" name="memberName" th:value="${el.getMemberName()}">
+                                                    </td>
+                                                <td>
+                                                    <textarea class="none-border form-control role" placeholder="250자 이내로 입력해주세요" name="role" maxlength="250" th:text="${el.getRole()}" required></textarea>
+                                                    <td width="5%">
+                                                    <i class="bi bi-x-lg d-flex justify-content-center fw-bold" style="cursor:pointer;" onclick="removeMemberRole(this)"></i>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                     <label class="d-flex justify-content-center">
@@ -272,6 +269,7 @@
                             <div class="col-sm-10">
                                         <textarea id="ckeditor" placeholder=""
                                                   style="display: none; width: 100%;"></textarea>
+                                <textarea id="temp" name="temp" th:text="${portfolio.getReadme()}" style="display: none"></textarea>
 
                                 <script>
                                     let editor;
@@ -300,11 +298,11 @@
                             <label class="col-sm-2 col-form-label mt-2">공개 여부</label>
                             <div class="col-sm-10">
                                 <label class="check_disclosure">
-                                    <input type="radio" name="disclosure" value="공개" checked>
+                                    <input type="radio" name="disclosure" value="공개" th:checked="${portfolio.getDisclosure() == '공개'}">
                                     <span>공개</span>
                                 </label>
                                 <label class="check_disclosure">
-                                    <input type="radio" name="disclosure" value="비공개">
+                                    <input type="radio" name="disclosure" value="비공개" th:checked="${portfolio.getDisclosure() == '비공개'}">
                                     <span>비공개</span>
                                 </label>
                             </div>
@@ -313,6 +311,9 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label d-flex align-items-center">파일</label>
                             <div class="col-sm-10">
+                                <div th:each="el, i: ${portfolio.getFileList()}">
+                                    <p class="file-download" th:text="${el.getFileName()}">err</p>
+                                </div>
                                 <div style="display:inline;">
 <!--                                    <label for="activityImg">-->
 <!--                                        <img src="/images/common/add_img.png"-->
@@ -330,7 +331,7 @@
                         </div>
 
                         <button type="button" class="btn btn-dark btn-lg px-5 ml-5" onclick="dataSubmit()">
-                            등록하기
+                            수정하기
                         </button>
 
                     </div>
@@ -339,9 +340,22 @@
             </div> <!-- card-body end -->
 
             <script>
+                window.onload = function(){
+                    let content = $("#introduce").val();
+
+                    if (content.length == 0 || content == '') {
+                        $('.introduceTextCount').text('0자');
+                    } else {
+                        $('.introduceTextCount').text(content.length + '자');
+                    }
+                    autosize($(".role"));
+                    editor.setData(document.getElementById("temp").value);
+                }
+
                 let techStack = [];
 
                 let memberRole = {
+                    id: '',
                     memberName: '',
                     role: '',
                 }
@@ -365,6 +379,7 @@
                         if (index % 2 == 1) {
                             memberRoleList.push(memberRole);
                             memberRole = {
+                                id: '',
                                 memberName: '',
                                 role: '',
                             }
@@ -372,6 +387,7 @@
                     });
 
                     var portfolio = {
+                        id: [[${portfolio.id}]],
                         projectName: $('#projectName').val(),
                         introduce: $('#introduce').val(),
                         startDate: $('#startDate').val(),
@@ -392,18 +408,18 @@
                     formData.append("portfolio", new Blob([JSON.stringify(portfolio)], {type: "application/json"}));
 
                     $.ajax({
-                        url: "/user/portfolio/register/edit",
+                        url: "/user/portfolio/modify",
                         data: formData,
                         processData: false,
                         contentType: false,
                         enctype: 'multipart/form-data',
                         type: "POST",
                         success: function () {
-                            window.location = "/user/profile/myPortfolio";
+                            window.location = "/portfolio/detail?p=" + [[${portfolio.id}]];
                             alert("포트폴리오 등록에 성공했습니다.");
                         },
                         error: function () {
-                            window.location = "/user/portfolio/register";
+                            window.location = "/portfolio/detail?p=" + [[${portfolio.id}]];
                             alert("포트폴리오 등록에 실패했습니다.");
                         }
                     });
