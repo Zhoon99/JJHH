@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/user_head::userHead"></head>
+
+<style>
+  body {
+    background: #F5F9FD;
+  }
+
+  .searchBar {
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
+
+  }
+
+  .searchBar-input {
+    font-size: 16px;
+    font-weight: 600;
+    width: 70%;
+    height: 50px;
+    border-radius: 50px;
+    border: 3px solid #012970;
+    padding: 7px 15px;
+    text-align: left;
+    display: inline;
+    outline: none;
+  }
+
+  .preview-name {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+  }
+
+  .preview-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+  }
+
+  .preview-wrap {
+    padding: 10px 30px;
+    font-weight: 900;
+    color: black;
+
+    border: 3px solid #012970;
+    background-color: #ffffff;
+    margin: 20px 0;
+    border-radius: 2rem;
+  }
+
+  .result-count {
+    font-weight: 900;
+    font-size: 20px;
+    margin: 30px 20px;
+  }
+
+  .page-nav {
+    text-align: center;
+  }
+</style>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header th:replace="layout/header::header('portfolio')"></header>
+
+<main id="main" class="main">
+  <section class="section">
+
+    <div class="container">
+      <div class="searchBar">
+        <input class="searchBar-input" type="search" id="search-bar" placeholder="클래스 검색하기!" spellcheck="false"
+               onkeyup="search();"/>
+      </div>
+
+      <script>
+        function search() {
+          if($("#search-bar").val().length > 0) {
+            if(window.event.keyCode == 13) {
+              window.location = "/search?s=" + $("#search-bar").val();
+            }
+          } else {
+            alert("검색어를 입력해주세요.")
+          }
+        }
+      </script>
+
+      <div>
+        <p class="fw-bold fs-4 text-center mt-5">검색 결과가 없습니다.</p>
+      </div>
+
+    </div>
+
+  </section>
+</main><!-- End #main -->
+
+</body>
+
+</html>

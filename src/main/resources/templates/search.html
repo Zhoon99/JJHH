@@ -44,17 +44,11 @@
         padding: 10px 30px;
         font-weight: 900;
         color: black;
-    }
 
-    .portfolio-result {
         border: 3px solid #012970;
         background-color: #ffffff;
         margin: 20px 0;
-
-        border-top-left-radius: 2em;
-        border-top-right-radius: 2em;
-        border-bottom-left-radius: 2em;
-        border-bottom-right-radius: 2em;
+        border-radius: 2rem;
     }
 
     .result-count {
@@ -94,47 +88,45 @@
                 }
             </script>
 
-            <div th:if="${search}">
-                <div class="result-count" th:text="${search.size} + '개의 결과'"></div>
+            <div>
+                <div class="result-count" th:text="${search.getTotalElements} + '개의 결과'"></div>
                 <div class="portfolio-result" th:each="el, i: ${search}">
 
-                    <a th:href="'/portfolio/detail?p=' + ${el.getId()}">
-                        <div class="preview-wrap">
-                            <div class="preview-name">
-                                <i class="bi bi-people-fill me-1 fw-bold"></i>
-                                <p th:text="${el.getProjectName()}">err</p>
-                                <span class="ms-auto" th:text="'upload' + ${el.getRegDate()}"></span>
+                    <div class="preview">
+                        <a th:href="'/portfolio/detail?p=' + ${el.getId()}">
+                            <div class="preview-wrap">
+                                <div class="preview-name">
+                                    <i class="bi bi-people-fill me-1 fw-bold"></i>
+                                    <p th:text="${el.getProjectName()}">err</p>
+                                    <span class="ms-auto" th:text="'upload' + ${el.getRegDate()}"></span>
+                                </div>
+                                <p th:text="${el.getIntroduce()}">err</p>
+                                <div class="preview-info">
+                                    <p th:text="'View ' + ${el.getViews()} + ' | '"></p>
+                                    <p th:text="${el.getStartDate()} + ' ~ ' + ${el.getLastDate()} + ' | '"></p>
+                                    <p th:text="${el.getTeamList().size} + '명 참여'"></p>
+                                </div>
                             </div>
-                            <p th:text="${el.getIntroduce()}">err</p>
-                            <div class="preview-info">
-                                <p th:text="'View ' + ${el.getViews()} + ' | '"></p>
-                                <p th:text="${el.getStartDate()} + ' ~ ' + ${el.getLastDate()} + ' | '"></p>
-                                <p th:text="${el.getTeamList().size} + '명 참여'"></p>
-                            </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
 
                 </div>
             </div>
 
-            <div th:if="${error}">
-                <p class="fw-bold fs-4 text-center mt-5" th:text="${error}"></p>
-            </div>
-
         </div>
 
-        <nav class="page-nav">
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center">
             <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
+                <li class="page-item" th:classappend="${1 == search.pageable.pageNumber + 1}? 'disabled'">
+                    <a class="page-link" href="#" th:href="@{/search(s=${keyword}, page=${search.pageable.pageNumber - 1})}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
+                <li class="page-item" th:classappend="${i == search.pageable.pageNumber + 1}? 'disabled'" th:each="i: ${#numbers.sequence(startPage, endPage)}">
+                    <a class="page-link" href="#" th:text="${i}" th:href="@{/search(s=${keyword}, page=${i - 1})}">err</a>
+                </li>
+                <li class="page-item" th:classappend="${search.totalPages == search.pageable.pageNumber + 1}? 'disabled'">
+                    <a class="page-link" href="#" th:href="@{/search(s=${keyword}, page=${search.pageable.pageNumber + 1})}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
