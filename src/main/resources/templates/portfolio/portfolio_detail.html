@@ -135,16 +135,12 @@
                                         <p class="nickname mt-3" th:text="${portfolio.getWriter().getNick()}">err</p>
                                     </a>
                                 </div>
-
+								<input type="hidden" id="pId" name="pId" th:value="${portfolio.getId()}">
                                 <div th:if="${#authentication.principal.account.accountId} == ${portfolio.getWriter().getAccountId()}" style="margin-top: 40px;">
                                     <a th:href="@{/user/portfolio/register/modify(pId=${portfolio.getId()})}"><button type="button" class="btn btn-secondary">수정</button></a>
-                                    <a href=""><button type="button" class="btn btn-danger">삭제</button></a>
-					
-                    		<input type="hidden" name="pId" th:value="${portfolio.getId()}">
-                                <div th:if="${#authentication.principal.account.accountId} == ${portfolio.getWriter().getAccountId()}">
-                                    <button type="button" class="btn btn-secondary">수정</button>
-                                    <button type="submit" class="btn btn-danger">삭제</button>
+                                    <button type="button" onclick="dataDel();" class="btn btn-danger">삭제</button>
                                 </div>
+							
                             </div>
                         </div>
 
@@ -177,8 +173,8 @@
                                 </div>
 
                             </div>
-                        </div>
-
+                        </div>	
+			
                         <hr>
 
                         <div class="row mb-3">
@@ -256,7 +252,30 @@
         </div>
     </section>
 </main><!-- End #main -->
-
+<script type="text/javascript">
+         function dataDel(){
+             let data = document.getElementById("pId").value;
+             alert(data);
+             const sendDTO = {
+                       pId:data
+                       };
+             $.ajax({
+                 url: "/portfolio/detail/delete",
+                 data: sendDTO,
+                 type: 'POST',
+                 success: function(data) { 
+             		console.log(data);
+         			alert('성공');
+         			history.back();		
+                 },
+        			error: function(data) { 
+             		console.log(data);
+         			alert('실패');
+         	}
+             });
+             
+         } 
+</script>
 </body>
 
 </html>
