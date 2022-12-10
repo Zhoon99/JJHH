@@ -2,6 +2,8 @@ package spring.assignment.jjhh.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import java.io.IOException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import spring.assignment.jjhh.dto.PortfolioDto;
+import spring.assignment.jjhh.entity.Account;
+import spring.assignment.jjhh.entity.Portfolio;
 import spring.assignment.jjhh.repository.PortfolioRepository;
 import spring.assignment.jjhh.service.PortfolioService;
 import spring.assignment.jjhh.service.PrincipalDatails;
@@ -69,4 +73,12 @@ public class PortfolioController {
 
         portfolioService.modifyPortfolio(portfolioDto, files);
     }
+
+	@PostMapping("/portfolio/detail/delete")
+	public String PortfolioDelete(@RequestParam(value = "pId") String id) {
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		Long lo = Long.parseLong(id);
+		portfolioRepository.deleteById(lo);
+		return "redirect:/";
+	}
 }

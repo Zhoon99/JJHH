@@ -45,16 +45,16 @@ public class Portfolio extends BaseEntity implements Serializable {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", orphanRemoval = true)
     private List<File> fileList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", orphanRemoval = true)
     private List<TechStack> techStackList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", orphanRemoval = true)
     private List<Team> teamList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
     public void registInit(Integer views, Account account) {
