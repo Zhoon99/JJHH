@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/user_head::userHead"></head>
+
+<style>
+    body {
+        background: #F5F9FD;
+    }
+
+    .register-container {
+        width: 50%;
+        margin: 0 auto;
+        border: 4px solid #012567;
+    }
+
+    table {
+        width: 100%;
+        border: 1px solid #012567;
+        border-collapse: collapse;
+    }
+
+    thead {
+        font-weight: bold;
+        color: #fff;
+        background: #012567;
+    }
+
+    th, td {
+        border: 1px solid #012567;
+        padding: 2px 10px;
+    }
+
+    .check_disclosure input[type="radio"] {
+        display: none;
+    }
+
+    .check_disclosure input[type="radio"] + span {
+        width: 100px;
+        display: inline-block;
+        padding: 15px 10px;
+        border: 1px solid #dfdfdf;
+        background-color: #ffffff;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .check_disclosure input[type="radio"]:checked + span {
+        width: 100px;
+        background-color: #113a6b;
+        color: #ffffff;
+    }
+
+    .ck-editor__editable:not(.ck-editor__nested-editable) {
+        min-height: 250px;
+    }
+
+    .none-border {
+        border: 0;
+        height: 20px;
+    }
+
+    .none-border input:focus {
+        outline: none;
+    }
+</style>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header th:replace="layout/header::header('portfolio')"></header>
+
+<main id="main" class="main">
+    <section class="section">
+        <div class="register-container card">
+            <div class="card-body px-5 fw-bold">
+                <div class="reg-split">
+                    <div class="page-1 px-1">
+                        <h5 class="card-title">포트폴리오 수정</h5>
+
+                        <div class="row mb-3">
+                            <label for="projectName" class="col-sm-2 col-form-label">포트폴리오 명</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="${portfolio.getProjectName()}" name="projectName" id="projectName"
+                                       placeholder="포트폴리오 명" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label d-flex align-items-center">한 줄 소개</label>
+                            <div class="col-sm-10">
+                                <div class="introduceLengthWrap d-flex justify-content-end">
+                                    <span class="introduceTextCount">0자</span>
+                                    <span class="introduceTextTotal">/150자</span>
+                                </div>
+                                <textarea class="form-control" placeholder="150자 이내로 입력해주세요" name="introduce"
+                                          id="introduce" th:text="${portfolio.getIntroduce()}" 
+                                          maxlength="150" style="height: 100px; resize: none;"
+                                          required></textarea>
+
+                                <script>
+                                    $('#introduce').keyup(function (e) {
+                                        let content = $(this).val();
+
+                                        // 글자수 세기
+                                        if (content.length == 0 || content == '') {
+                                            $('.introduceTextCount').text('0자');
+                                        } else {
+                                            $('.introduceTextCount').text(content.length + '자');
+                                        }
+
+                                        // 글자수 제한
+                                        if (content.length > 150) {
+                                            // 200자 부터는 타이핑 되지 않도록
+                                            $(this).val($(this).val().substring(0, 150));
+                                            // 200자 넘으면 알림창 뜨도록
+                                            alert('150자까지 입력 가능합니다.');
+                                        }
+                                    });
+                                </script>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">진행 기간</label>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <input type="date" class="form-control" name="startDate"
+                                               id="startDate" th:value="${portfolio.getStartDate()}" onchange="setLastDate()" required>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="date" th:value="${portfolio.getLastDate()}" class="form-control" name="lastDate"
+                                               id="lastDate" required>
+                                    </div>
+							
+                                    <script>
+                                        function setLastDate() {
+                                            if (document.getElementById('lastDate').value == "") {
+                                                document.getElementById('lastDate').value = document.getElementById('startDate').value;
+                                            }
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <form id="techStackForm">
+                            <div class="row d-flex align-items-start mb-3">
+                                <label class="col-sm-2 control-label">기술 스택</label>
+                                <div class="col-sm-10">
+
+                                    <div class="row row-cols-3" id="techStack-result">
+                                    </div>
+									
+									<div th:each="el, i: ${portfolio.getTechStackList()}">
+										
+									
+									<script>	
+										const result = document.getElementById('techStack-result');
+	
+	                                    let html = "";
+	                                    html += "<div class=\"col\">" +
+	                                        "<i class=\"bi bi-x-lg d-flex justify-content-end\" style=\"cursor:pointer;\" onclick=\"removeTech(this)\"></i>" +
+	                                        "<input type='text' class='form-control'" + "th:text=" + "${el.getTechName()}" + "name=\"techStack\">" +
+	                                        "</div>"
+	                                    result.insertAdjacentHTML("beforeend", html);
+									</script>
+									</div>
+
+                                    <label class="d-flex justify-content-center align-items-end">
+                                        <div class="fw-bold" style="cursor:pointer;" onclick="insertTech()">
+                                            기술 스택 추가 ▼
+                                        </div>
+                                    </label>
+                                    
+                                    
+                                    <div class="row row-cols-4">
+                                    <div th:each="el, i: ${portfolio.getTechStackList()}">
+                                        <div class="tech-tag">
+                                            <p class="tech-name" th:text="${el.getTechName()}"></p>
+                                        </div>
+                                    </div>
+                                	</div>
+
+                                    <script>
+                                        function insertTech() {
+                                            const result = document.getElementById('techStack-result');
+
+                                            let html = "";
+                                            html += "<div class=\"col\">" +
+                                                "<i class=\"bi bi-x-lg d-flex justify-content-end\"  style=\"cursor:pointer;\" onclick=\"removeTech(this)\"></i>" +
+                                                "<input type='text' class='form-control' name=\"techStack\">" +
+                                                "</div>"
+                                            result.insertAdjacentHTML("beforeend", html);
+                                        }
+
+                                        function removeTech(element) {
+                                            const result = document.getElementById('techStack-result');
+                                            const row = element.parentNode;
+
+                                            result.removeChild(row);
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </form>
+
+                        <hr>
+
+                        <form id="memberRoleForm">
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label mt-4">역할</label>
+                                <div class="col-sm-10">
+
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <td width="30%">팀원</td>
+                                            <td rowspan="2">역할</td>
+                                            <td></td>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="memberRole-result">
+                                        </tbody>
+                                    </table>
+                                    <label class="d-flex justify-content-center">
+                                        <div class="fw-bold" style="cursor:pointer;" onclick="insertMemberRole()">
+                                            커리큘럼 추가 ▼
+                                        </div>
+                                    </label>
+
+                                    <script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
+                                    <script>
+                                        function insertMemberRole() {
+                                            const result = document.getElementById('memberRole-result');
+
+                                            let html = "";
+                                            html += "<tr>" +
+                                                "<td width=\"30%\">" +
+                                                "<input class='none-border form-control' type='text' placeholder=\"팀 원\" name=\"memberName\">" +
+                                                "</td>" +
+                                                "<td>" +
+                                                "<textarea class=\"none-border form-control role\" placeholder=\"250자 이내로 입력해주세요\" name=\"role\" maxlength=\"250\" required></textarea>" +
+                                                "<td width=\"5%\">" +
+                                                "<i class=\"bi bi-x-lg d-flex justify-content-center fw-bold\" style=\"cursor:pointer;\" onclick=\"removeMemberRole(this)\"></i>" +
+                                                "</td>" +
+                                                "</tr>";
+                                            result.insertAdjacentHTML("beforeend", html);
+
+                                            autosize($(".role"));
+                                        }
+
+                                        function removeMemberRole(element) {
+                                            const result = document.getElementById('memberRole-result');
+                                            const tr = element.parentNode.parentNode;
+
+                                            result.removeChild(tr);
+                                        }
+                                    </script>
+
+                                </div>
+                            </div>
+                        </form>
+
+                        <hr>
+
+                        <div class="row mb-3">
+                            <label for="ckeditor" class="col-sm-2 col-form-label">readme</label>
+                            <div class="col-sm-10">
+                                        <textarea id="ckeditor" placeholder=""
+                                                  style="display: none; width: 100%;"></textarea>
+
+                                <script>
+                                    let editor;
+
+                                    ClassicEditor
+                                        .create(document.querySelector('#ckeditor'), {})
+                                        .then(newEditor => {
+                                            editor = newEditor;
+                                        })
+
+                                        .then(editor => {
+                                            window.editor = editor;
+
+                                        })
+                                        .catch(error => {
+                                            console.error('Oops, something went wrong!');
+                                            console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                                            console.warn('Build id: g64ljk55ssvc-goqlohse75uw');
+                                            console.error(error);
+                                        });
+                                </script>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label mt-2">공개 여부</label>
+                            <div class="col-sm-10">
+                                <label class="check_disclosure">
+                                    <input type="radio" name="disclosure" value="공개" checked>
+                                    <span>공개</span>
+                                </label>
+                                <label class="check_disclosure">
+                                    <input type="radio" name="disclosure" value="비공개">
+                                    <span>비공개</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label d-flex align-items-center">파일</label>
+                            <div class="col-sm-10">
+                                <div style="display:inline;">
+<!--                                    <label for="activityImg">-->
+<!--                                        <img src="/images/common/add_img.png"-->
+<!--                                             style="width:100px; height:100px; cursor: pointer;">-->
+<!--                                    </label>-->
+                                    <form id="addForm" method="post" enctype="multipart/form-data">
+                                        <input type="file" id="file" name="file[]" multiple="true">
+                                    </form>
+                                    <span id='atv_img_preview'></span>
+                                </div>
+
+                                <script>
+                                </script>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-dark btn-lg px-5 ml-5" onclick="dataSubmit()">
+                            등록하기
+                        </button>
+
+                    </div>
+
+                </div>
+            </div> <!-- card-body end -->
+
+            <script>
+                let techStack = [];
+
+                let memberRole = {
+                    memberName: '',
+                    role: '',
+                }
+
+                let memberRoleList = [];
+                function dataSubmit() {
+                    $('#techStackForm input').each(function (index) {
+                        techStack.push($(this).val());
+                    });
+
+                    $('#memberRole-result textarea, #memberRole-result input').each(function (index, el) {
+                        var input = $(this);
+                        switch (input.attr('name')) {
+                            case 'memberName':
+                                memberRole.memberName = input.val();
+                                break;
+                            case 'role':
+                                memberRole.role = input.val();
+                                break;
+                        }
+                        if (index % 2 == 1) {
+                            memberRoleList.push(memberRole);
+                            memberRole = {
+                                memberName: '',
+                                role: '',
+                            }
+                        }
+                    });
+
+                    var portfolio = {
+                        projectName: $('#projectName').val(),
+                        introduce: $('#introduce').val(),
+                        startDate: $('#startDate').val(),
+                        lastDate: $('#lastDate').val(),
+                        readme: editor.getData(),
+                        disclosure: $('input[name="disclosure"]:checked').val(),
+
+                        techStackList: techStack,
+                        teamList: memberRoleList
+                    };
+
+                    var formData = new FormData();
+				
+                    var FileSize = document.getElementById('file').files.length;
+                    for (var index = 0; index < FileSize; index++) {
+                        formData.append("file", document.getElementById('file').files[index]);
+                    }
+                    formData.append("portfolio", new Blob([JSON.stringify(portfolio)], {type: "application/json"}));
+
+                    $.ajax({
+                        url: "/user/portfolio/register/edit",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        enctype: 'multipart/form-data',
+                        type: "POST",
+                        success: function () {
+                            window.location = "/user/profile/myPortfolio";
+                            alert("포트폴리오 등록에 성공했습니다.");
+                        },
+                        error: function () {
+                            window.location = "/user/portfolio/register";
+                            alert("포트폴리오 등록에 실패했습니다.");
+                        }
+                    });
+                }
+            </script>
+
+        </div>
+    </section>
+</main><!-- End #main -->
+
+</body>
+
+</html>
