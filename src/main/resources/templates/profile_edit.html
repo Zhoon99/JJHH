@@ -22,7 +22,7 @@
 </style>
 
 <body>
-
+<header th:replace="layout/header::header"></header>
 <main>
   <div class="container">
 
@@ -37,41 +37,32 @@
               </a>
             </div><!-- End Logo -->
 
-            <div class="card mb-3" style="width: 40rem;">
+            <div class="card mb-3" style="width: 55rem;">
 
               <div class="card-body">
 
                 <div class="py-0">
-                  <h5 class="card-title text-center pb-0 fs-5 fw-bold">회원가입</h5>
+                  <h5 class="card-title text-center pb-0 fs-5 fw-bold">프로필 수정</h5>
                 </div>
 
                 <hr>
+                <form class="row g-3 needs-validation" th:action="@{/user/profile/edit/{id}(id = ${account.accountId})}" method="post" 
+                onsubmit="return psck();" enctype="multipart/form-data" novalidate>
 
-                <form class="row g-3 needs-validation" action="/new" method="post" enctype="multipart/form-data" novalidate>
-
-                  <div class="col-12">
-                    <label for="email" class="form-label">이메일</label>
-                    <input type="email" class="form-control" name="email" id="email"
-                           placeholder="이메일"
-                           required>
-                    <div class="invalid-feedback">이메일을 입력해주세요!</div>
-                  </div>
-
-                  <div class="col-12">
-                    <label for="password" class="form-label">비밀번호</label>
-                    <input type="password" class="form-control" name="password" id="password"
-                           placeholder="Password" data-minlength="6" required>
-                    <div class="invalid-feedback">비밀번호를 입력해주세요!</div>
-                  </div>
-
-                 <div class="col-12">
-                    <label class="control-label">프로필 이미지</label><br>
-                    <div style="display:inline;">
-                      <label for="ex_file">
-                        <img id="profile_img" onclick="fileRemove()" src="/assets/img/default_profile.jpg"
-                             style="width:150px; height:150px; cursor:pointer; border-radius: 90%;">
+				<div class="col-12 ">
+                    <label class="control-label" style="margin-left: 370">프로필 이미지</label><br>
+                    <div style="display:inline; margin-left: 350">
+                      <label th:if="${account.profileImg}" for="ex_file">
+                        <img id="profile_img" alt="/assets/img/default_profile.jpg" th:src="${account.profileImg}" 
+                        onclick="fileRemove()" style="width:150px; height:150px; cursor:pointer; border-radius: 90%;">
                       </label>
-                      <input type="file" name="imgsw" id="ex_file" accept=".jpg, .png"
+                      
+                      <label th:unless="${account.profileImg}" for="ex_file">
+                        <img id="profile_img" alt="" src="/assets/img/default_profile.jpg" 
+                        onclick="fileRemove()" style="width:150px; height:150px; cursor:pointer; border-radius: 90%;">
+                      </label>
+                      
+                      <input type="file" name="imgsw" id="ex_file" accept=".jpg, .png" 
                              style="display: none;">
 
                       <span id='user_upload_img'></span>
@@ -97,21 +88,35 @@
                    		} 
                    			
                    		
-                   	}
+                   	};
                       
                   </script>
 
                   <div class="col-12">
-                    <label for="nickname" class="form-label">닉네임</label>
-                    <input type="text" class="form-control" name="nick" id="nickname" placeholder="닉네임"
+                    <label for="email" class="form-label">닉네임</label>
+                    <input type="email" class="form-control" name="nick" id="email" th:value="${account.nick}"
                            required>
                     <div class="invalid-feedback">닉네임을 입력해주세요!</div>
                   </div>
+
+                  <div th:if="${account.role == 'basic'}" class="col-12">
+                    <label for="password" class="form-label">변경할 비밀번호</label>
+                    <input type="password" class="form-control" name="password" id="password1" value=""
+                           placeholder="변경할 비밀번호를 입력해주세요!" data-minlength="6" required>
+                    <div class="invalid-feedback">변경할 비밀번호를 입력해주세요!</div>
+                  </div>
                   
-                   <div class="row mb-3">
+                  <div th:if="${account.role == 'basic'}" class="col-12">
+                    <label for="password" class="form-label">변경할 비밀번호 확인</label>
+                    <input type="password" class="form-control" name="" id="password2" value=""
+                           placeholder="변경할 비밀번호를 한번더 입력해주세요!" data-minlength="6" required>
+                    <div class="invalid-feedback">변경할 비밀번호를 한번더 입력해주세요!</div>
+                  </div>
+					<p>
+                  <div class="row mb-3">
                             <label for="ckeditor" class="col-sm-12 col-form-label">readme</label>
                             <div class="col-sm-13">
-                                        <textarea id="ckeditor" name="editor" placeholder=""
+                                        <textarea id="ckeditor" placeholder=""
                                                   style="display: none; width: 100%;"></textarea>
 
                                 <script>
@@ -134,16 +139,16 @@
                                             console.error(error);
                                         });
                                 </script>
-                                <textarea id="content" name="introduce"  style="display: flex"></textarea>
+                                <textarea id="content" name="introduce" th:text="${account.introduce}" style="display: none"></textarea>
                             </div>
                         </div>
                   
 					<div class="col-12 d-flex justify-content-center">
+					<input type="text" id="role" style="display: none" th:value="${account.role}">
                     <button type="button" class="btn btn-dark btn-lg px-5" onclick="history.back()" style="margin-right: 20px">돌아가기</button>
-                    <button type="submit" onclick="edit_set()" class="btn btn-dark btn-lg px-5 ml-5" >가입하기</button>
-                    
+                    <button type="submit" class="btn btn-dark btn-lg px-5 ml-5">수정하기</button>
                   </div>
-                 <div th:if="${_csrf} ne null" >
+ 				<div th:if="${_csrf} ne null" >
  				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
  				</div>
                 </form>
@@ -159,19 +164,33 @@
 
   </div>
 </main><!-- End #main -->
-
 <script type="text/javascript">
-function edit_set() {
-//	alert(document.getElementById("ex_file").value);
-	//alert(editor.getData());
-	document.getElementById("ex_file").value = null;
-	document.getElementById("content").value = editor.getData();
-	//return true;
-	//return false;
+$(document).ready(function(){
 	
+	let txt = document.getElementById("content").value;
+
+	editor.setData(txt);
+})
+
+function psck() {
+	
+	if(document.getElementById("role") == "basic") {
+	
+	let ps1 = document.getElementById("password1").value;
+	let ps2 = document.getElementById("password2").value;
+	
+		if(ps1 != ps2) {
+			alert("두 비밀번호가 서로 다릅니다. 다시 확인해주세요.");
+			return false;
+		}
+		
+		if(ps1 == "") ps1 = "";
+		if(ps1 == null) ps1="";
+	}
+	document.getElementById("content").value = editor.getData();
+	
+	//return false;
 }
-
-
 </script>
 </body>
 

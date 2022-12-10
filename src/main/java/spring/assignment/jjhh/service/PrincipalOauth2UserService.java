@@ -41,6 +41,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 			provider = userRequest.getClientRegistration().getClientId();
 			providerid = oAuth2User.getAttribute("sub");
 			email = provider + "_" + providerid;
+			System.out.println("!!!!!!!!!!!!!!!   "  + email);
 			Nick = oAuth2User.getAttribute("name");
 			password = "gg";// bCryptPasswordEncoder.encode("gg");
 //			email = oAuth2User.getAttribute("email");

@@ -14,11 +14,15 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	
 	@Value("${resource.location}")
     private String resourceLocation;
+	
+	@Value("${resource.filelocation}")
+    private String resourcefileLocation;
     
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 //    	registry.addResourceHandler("/assets/img/data/**").addResourceLocations(uploadPath);
     	registry.addResourceHandler("/images/**").addResourceLocations(resourceLocation);
+    	registry.addResourceHandler("/data/**").addResourceLocations(resourcefileLocation);
     }
 
 }
