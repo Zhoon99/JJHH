@@ -45,7 +45,8 @@ public class PortfolioController {
 	@GetMapping("/portfolio/detail")
 	public String detail(@RequestParam Long p, Model model) {
 		PortfolioDto.Response portfolioDetail = portfolioService.getPortfolioDetail(p);
-
+		System.out.println(portfolioDetail.getId());
+		System.out.println("////////////////////////////////////////////");
 		model.addAttribute("portfolio", portfolioDetail);
 		return "portfolio/portfolio_detail";
 	}
@@ -60,10 +61,11 @@ public class PortfolioController {
 	@GetMapping("/user/portfolio/register/edit")
 	public String getprofloDeteail(@RequestParam Long p, Model model) {
 		PortfolioDto.Response portfolioDetail = portfolioService.getPortfolioDetail(p);
-		System.out.println(portfolioDetail.getIntroduce());
+		System.out.println(portfolioDetail.getId());
 		model.addAttribute("portfolio", portfolioDetail);
 		return "portfolio/portfolio_register_edit";
 	}
+	
 	
 //	@PostMapping("/user/portfolio/register/edit")
 //	@ResponseBody

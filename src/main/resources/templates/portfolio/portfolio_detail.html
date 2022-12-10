@@ -122,7 +122,8 @@
             <div class="card-body px-5 fw-bold">
                 <div class="reg-split">
                     <div class="page-1 px-1">
-                        <div class="detail-header">
+					
+							<div class="detail-header">
                             <h5 class="project-name" th:text="${portfolio.getProjectName()}">err</h5>
                             <div class="ms-auto">
                                 <a class="profile-wrap" th:href="'/user/profile?id=' + ${portfolio.getWriter().getAccountId()}">
