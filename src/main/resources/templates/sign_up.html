@@ -134,13 +134,13 @@
                                             console.error(error);
                                         });
                                 </script>
-                                <textarea id="content" name="introduce"  style="display: flex"></textarea>
+                                <textarea id="content" name="introduce" style="display: none"></textarea>
                             </div>
                         </div>
                   
 					<div class="col-12 d-flex justify-content-center">
                     <button type="button" class="btn btn-dark btn-lg px-5" onclick="history.back()" style="margin-right: 20px">돌아가기</button>
-                    <button type="submit" onclick="edit_set()" class="btn btn-dark btn-lg px-5 ml-5" >가입하기</button>
+                    <button type="submit" onclick="edit_set" class="btn btn-dark btn-lg px-5 ml-5" >가입하기</button>
                     
                   </div>
                  <div th:if="${_csrf} ne null" >
@@ -159,18 +159,14 @@
 
   </div>
 </main><!-- End #main -->
-
 <script type="text/javascript">
-function edit_set() {
+function sub() {
 //	alert(document.getElementById("ex_file").value);
-	//alert(editor.getData());
 	document.getElementById("ex_file").value = null;
 	document.getElementById("content").value = editor.getData();
 	//return true;
 	//return false;
-	
 }
-
 
 </script>
 </body>

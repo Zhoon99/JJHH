@@ -50,9 +50,12 @@ public class LoginController {
 	@PostMapping("/new")
     public String memberForm(AccountDto dto, 
             BindingResult bindingResult,
-            @RequestParam("imgsw") MultipartFile file,  Model model) {
+            @RequestParam(value = "imgsw", required = false) MultipartFile file,  Model model) {
        if(file.isEmpty()) System.out.println("YYY"); 
        else System.out.println("NNN");
+       System.out.println(file.getOriginalFilename());
+       System.out.println(file.getSize());
+       System.out.println(file.getName());
        System.out.println("file : " + dto.getIntroduce()); 
         if(bindingResult.hasErrors()) {
             return "member/memberForm";
@@ -68,7 +71,6 @@ public class LoginController {
 	        	dto.setProfile_img(imgurl);
 	        	dto.setProfileOriName(img.getFileOriName());
         	}
-//        	String imgurl = "/assets/img/data/" + img.getFileOriName();
         	dto.setRole("basic");
             Account createMember = Account.createAccount(dto, passwordEncoder);
             accountRepository.save(createMember);

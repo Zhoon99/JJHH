@@ -54,16 +54,16 @@
                     <div style="display:inline; margin-left: 350">
                       <label th:if="${account.profileImg}" for="ex_file">
                         <img id="profile_img" alt="/assets/img/default_profile.jpg" th:src="${account.profileImg}"
-                        onclick="fileRemove()" style="width:150px; height:150px; cursor:pointer; border-radius: 90%;">
+                         style="width:150px; height:150px; cursor:pointer; border-radius: 90%;">
                       </label>
 
                       <label th:unless="${account.profileImg}" for="ex_file">
                         <img id="profile_img" alt="" src="/assets/img/default_profile.jpg"
-                        onclick="fileRemove()" style="width:150px; height:150px; cursor:pointer; border-radius: 90%;">
+                        style="width:150px; height:150px; cursor:pointer; border-radius: 90%;">
                       </label>
 
                       <input type="file" name="imgsw" id="ex_file" accept=".jpg, .png"
-                             style="display: none;">
+                            style="display: none;">
 
                       <span id='user_upload_img'></span>
                     </div>
