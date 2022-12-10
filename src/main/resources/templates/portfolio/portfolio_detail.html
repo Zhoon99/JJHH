@@ -122,8 +122,14 @@
             <div class="card-body px-5 fw-bold">
                 <div class="reg-split">
                     <div class="page-1 px-1">
-					
 							<div class="detail-header">
+							
+                    		<form action="/portfolio/detail/delete" method="post">
+                    		<input type="text" name="pId" th:value="${portfolio.getId()}">
+							<button type="submit">삭제</button>
+							</form>
+					
+					<!--  <a href="/portfolio/detail/delete">aaaa</a> -->
                             <h5 class="project-name" th:text="${portfolio.getProjectName()}">err</h5>
                             <div class="ms-auto">
                                 <a class="profile-wrap" th:href="'/user/profile?id=' + ${portfolio.getWriter().getAccountId()}">
