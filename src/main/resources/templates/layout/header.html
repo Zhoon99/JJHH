@@ -15,10 +15,14 @@
                 <li><a href="/user/portfolio/register" class="nav-link scrollto my-4" th:classappend="${select} == 'portfolio'? 'active'"><i class="bx bx-book-content"></i> <span>Portfolio</span></a></li>
                 <li sec:authorize="isAuthenticated()"><a onclick="aa()" th:href="@{/user/profile(id=${#authentication.principal.account.accountId})}" class="nav-link scrollto my-4" th:classappend="${select} == 'profile'? 'active'"><i class="bx bx-user"></i><span>Profile</span></a></li>
                 <li sec:authorize="isAnonymous()"><a onclick="aa()" href="/login" class="nav-link scrollto my-4"><i class="bx bx-user"></i><span>Profile</span></a></li>
+                <li sec:authorize="isAuthenticated()"><a href="/logout" th:classappend="${select} == 'logout'? 'active'"
+                style="background: #FFA19D;" class="nav-link scrollto my-4"><i class="bi bi-plug"></i><span>logout</span></a></li>
+                
+            </div>
             </ul>
-            
-        </nav><!-- .nav-menu -->
 
+        </nav><!-- .nav-menu -->
+	
     </header><!-- End Header -->
 </div>
 
