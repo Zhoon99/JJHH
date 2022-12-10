@@ -45,7 +45,8 @@ public class PortfolioController {
 	@GetMapping("/portfolio/detail")
 	public String detail(@RequestParam Long p, Model model) {
 		PortfolioDto.Response portfolioDetail = portfolioService.getPortfolioDetail(p);
-
+		System.out.println(portfolioDetail.getId());
+		System.out.println("////////////////////////////////////////////");
 		model.addAttribute("portfolio", portfolioDetail);
 		return "portfolio/portfolio_detail";
 	}
@@ -63,6 +64,15 @@ public class PortfolioController {
 		model.addAttribute("portfolio", portfolioDetail);
 		return "portfolio/portfolio_register_edit";
 	}
+	
+	@PostMapping("/portfolio/detail/delete")
+	public String PortfolioDelete(@RequestParam(value = "pId") String id) {
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		Long lo = Long.parseLong(id); 
+		portfolioRepository.deleteById(lo);
+		return "redirect:/";
+	}
+	
 	
 //	@PostMapping("/user/portfolio/register/edit")
 //	@ResponseBody
