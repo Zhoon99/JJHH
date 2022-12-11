@@ -122,22 +122,26 @@
             <div class="card-body px-5 fw-bold">
                 <div class="reg-split">
                     <div class="page-1 px-1">
-							<div class="detail-header">
-							
+                        <div class="detail-header">
+
                             <h5 class="project-name" th:text="${portfolio.getProjectName()}">err</h5>
                             <div class="ms-auto">
 
                                 <div th:if="${#authentication.principal.account.accountId} != ${portfolio.getWriter().getAccountId()}">
-                                    <a class="profile-wrap" th:href="'/user/profile?id=' + ${portfolio.getWriter().getAccountId()}">
+                                    <a class="profile-wrap"
+                                       th:href="'/user/profile?id=' + ${portfolio.getWriter().getAccountId()}">
                                         <div>
                                             <img th:src="${portfolio.getWriter().getProfile_img()}" class="profile_img">
                                         </div>
                                         <p class="nickname mt-3" th:text="${portfolio.getWriter().getNick()}">err</p>
                                     </a>
                                 </div>
-								<input type="hidden" id="pId" name="pId" th:value="${portfolio.getId()}">
-                                <div th:if="${#authentication.principal.account.accountId} == ${portfolio.getWriter().getAccountId()}" style="margin-top: 40px;">
-                                    <a th:href="@{/user/portfolio/register/modify(pId=${portfolio.getId()})}"><button type="button" class="btn btn-secondary">수정</button></a>
+                                <input type="hidden" id="pId" name="pId" th:value="${portfolio.getId()}">
+                                <div th:if="${#authentication.principal.account.accountId} == ${portfolio.getWriter().getAccountId()}"
+                                     style="margin-top: 40px;">
+                                    <a th:href="@{/user/portfolio/modify(pId=${portfolio.getId()})}">
+                                        <button type="button" class="btn btn-secondary">수정</button>
+                                    </a>
                                     <button type="button" onclick="dataDel();" class="btn btn-danger">삭제</button>
                                 </div>
 
@@ -156,7 +160,8 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 control-label">진행 기간</label>
                             <div class="col-sm-10">
-                                <div th:text="${portfolio.getStartDate()} + ' ~ ' + ${portfolio.getLastDate()}">err</div>
+                                <div th:text="${portfolio.getStartDate()} + ' ~ ' + ${portfolio.getLastDate()}">err
+                                </div>
                             </div>
                         </div>
 
@@ -189,10 +194,10 @@
                                     </tr>
                                     </thead>
                                     <tbody th:each="el, i: ${portfolio.getTeamList()}">
-                                        <tr>
-                                            <td width="30%" th:text="${el.getMemberName()}">err</td>
-                                            <td th:text="${el.getRole()}">err</td>
-                                        </tr>
+                                    <tr>
+                                        <td width="30%" th:text="${el.getMemberName()}">err</td>
+                                        <td th:text="${el.getRole()}">err</td>
+                                    </tr>
                                     </tbody>
                                 </table>
 
@@ -205,14 +210,14 @@
                             <label class="col-sm-2 control-label">readme</label>
                             <div class="col-sm-10">
                                 <div class="cls-introduce">
-                                    <textarea name="introduce" id="introduce" th:value="${portfolio.getReadme()}" readOnly style="display: none;"></textarea>
+                                    <textarea name="introduce" id="introduce" th:value="${portfolio.getReadme()}"
+                                              readOnly style="display: none;"></textarea>
                                     <script type="text/javascript">
                                         $(document).ready(function () {
                                             ClassicEditor
-                                                .create( document.querySelector( '#introduce' ), {
-                                                } )
-                                                .then( editor => {
-                                                    editor.enableReadOnlyMode( 'introduce' );
+                                                .create(document.querySelector('#introduce'), {})
+                                                .then(editor => {
+                                                    editor.enableReadOnlyMode('introduce');
                                                     const toolbarElement = editor.ui.view.toolbar.element;
                                                     toolbarElement.style.display = 'none';
 
@@ -224,14 +229,14 @@
                                                         success: function (data) {
                                                             editor.setData(data);
                                                         },
-                                                        error: function (request,status,error) {
-                                                            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                                                        error: function (request, status, error) {
+                                                            alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                                                         }
                                                     });
-                                                } )
-                                                .catch( error => {
-                                                    console.log( error );
-                                                } );
+                                                })
+                                                .catch(error => {
+                                                    console.log(error);
+                                                });
                                         });
                                     </script>
                                 </div>
@@ -241,7 +246,8 @@
                         <hr>
 
                         <div th:each="el, i: ${portfolio.getFileList()}">
-                            <a th:href="${el.getPath()}" download><p class="file-download" th:text="${el.getFileName()}">err</p></a>
+                            <a th:href="${el.getPath()}" download><p class="file-download"
+                                                                     th:text="${el.getFileName()}">err</p></a>
                         </div>
 
                     </div>
@@ -253,28 +259,28 @@
     </section>
 </main><!-- End #main -->
 <script type="text/javascript">
-         function dataDel(){
-             let data = document.getElementById("pId").value;
-             alert(data);
-             const sendDTO = {
-                       pId:data
-                       };
-             $.ajax({
-                 url: "/portfolio/detail/delete",
-                 data: sendDTO,
-                 type: 'POST',
-                 success: function(data) {
-             		console.log(data);
-         			alert('성공');
-         			history.back();
-                 },
-        			error: function(data) {
-             		console.log(data);
-         			alert('실패');
-         	}
-             });
+    function dataDel() {
+        let data = document.getElementById("pId").value;
+        const sendDTO = {
+            pId: data
+        };
+        $.ajax({
+            url: "/portfolio/detail/delete",
+            data: sendDTO,
+            type: 'POST',
+            success: function (data) {
+                console.log(data);
+                window.location = "/user/profile/myPortfolio";
+                alert('포트폴리오 삭제에 성공했습니다.');
+            },
+            error: function (data) {
+                console.log(data);
+                window.location = "/user/profile/myPortfolio";
+                alert('포트폴리오 삭제에 실패했습니다.');
+            }
+        });
 
-         }
+    }
 </script>
 </body>
 

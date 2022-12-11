@@ -69,17 +69,17 @@ public class PortfolioController {
     @PostMapping("/user/portfolio/modify")
     @ResponseBody
     public void modifyPortfolio(@RequestPart(value = "portfolio") PortfolioDto.Response portfolioDto,
-                                @RequestPart(value = "file", required = false) MultipartFile[] files) {
+                                @RequestPart(value = "file", required = false) MultipartFile[] files,
+                                Authentication authentication) {
 
-        log.info(portfolioDto.toString());
-        portfolioService.modifyPortfolio(portfolioDto, files);
+        PrincipalDatails userPrincipal = (PrincipalDatails) authentication.getPrincipal();
+        portfolioService.modifyPortfolio(portfolioDto, files, userPrincipal.getAccount());
     }
 
 	@PostMapping("/portfolio/detail/delete")
-	public String PortfolioDelete(@RequestParam(value = "pId") String id) {
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    @ResponseBody
+	public void PortfolioDelete(@RequestParam(value = "pId") String id) {
 		Long lo = Long.parseLong(id);
 		portfolioRepository.deleteById(lo);
-		return "redirect:/";
 	}
 }

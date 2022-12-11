@@ -26,7 +26,7 @@ public class PortfolioDto {
         private String disclosure;
         private List<TechStackDto.Request> techStackList;
         private List<TeamDto.Request> teamList;
-        private List<FileDto.Request> filelist;
+        private List<FileDto.Request> fileList;
 
     }
 
@@ -44,9 +44,9 @@ public class PortfolioDto {
         private String readme;
         private String disclosure;
         private AccountResponse writer;
-        private List<TechStackDto.Response> techStackList;
-        private List<TeamDto.Response> teamList;
-        private List<FileDto.Response> fileList;
+        private List<TechStackDto.Request> techStackList = new ArrayList<>();
+        private List<TeamDto.Request> teamList = new ArrayList<>();
+        private List<FileDto.Request> fileList = new ArrayList<>();
 
     }
 

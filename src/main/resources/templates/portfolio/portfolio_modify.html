@@ -416,7 +416,7 @@
                             window.location = "/portfolio/detail?p=" + [[${portfolio.id}]];
                             alert("포트폴리오 등록에 성공했습니다.");
                         },
-                        error: function () {
+                        error: function (request, status, error) {
                             window.location = "/portfolio/detail?p=" + [[${portfolio.id}]];
                             alert("포트폴리오 등록에 실패했습니다.");
                         }
