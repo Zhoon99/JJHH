@@ -78,12 +78,12 @@
 
             <script>
                 function search() {
-                    if($("#search-bar").val().length > 0) {
-                        if(window.event.keyCode == 13) {
+                    if(window.event.keyCode == 13) {
+                        if($("#search-bar").val().length > 0) {
                             window.location = "/search?s=" + $("#search-bar").val();
+                        } else {
+                            alert("검색어를 입력해주세요.")
                         }
-                    } else {
-                        alert("검색어를 입력해주세요.")
                     }
                 }
             </script>
