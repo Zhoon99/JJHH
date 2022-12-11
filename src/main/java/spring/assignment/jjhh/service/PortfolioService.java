@@ -139,27 +139,6 @@ public class PortfolioService {
         return getPreviewPage(searchedPortfolio);
     }
 
-    private List<PortfolioDto.Preview> getPreview(Page<Portfolio> portfolioList) {
-        List<PortfolioDto.Preview> previewList = new ArrayList<>();
-        portfolioList.forEach(element -> {
-            PortfolioDto.Preview preview = PortfolioDto.Preview.builder()
-                    .id(element.getId())
-                    .projectName(element.getProjectName())
-                    .introduce(element.getIntroduce())
-                    .startDate(element.getStartDate())
-                    .lastDate(element.getLastDate())
-                    .views(element.getViews())
-                    .disclosure(element.getDisclosure())
-                    .regDate(element.getRegDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")))
-                    .techStackList(element.getTechStackList())
-                    .teamList(element.getTeamList())
-                    .build();
-            previewList.add(preview);
-        });
-
-        return previewList;
-    }
-
     private Page<PortfolioDto.Preview> getPreviewPage(Page<Portfolio> portfolioList) {
         Page<PortfolioDto.Preview> previewList = portfolioList.map(element ->
                 PortfolioDto.Preview.builder()
