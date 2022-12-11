@@ -197,63 +197,62 @@ public class PortfolioService {
     }
 
     @Transactional
-    public void modifyPortfolio(PortfolioDto.Response portfolioDto, MultipartFile[] files) {
+    public void modifyPortfolio(PortfolioDto.Response portfolioDto, MultipartFile[] files, Account account) {
         ModelMapper modelMapper = new ModelMapper();
         Portfolio portfolio = modelMapper.map(portfolioDto, Portfolio.class);
-
-        log.info("-------------------------------------------", portfolioDto.toString());
+        portfolio.registInit(0, account);
 
         portfolioRepository.save(portfolio);
 
-//        techStackRepository.delTechStack(portfolio.getId());
-//        List<TechStack> techStackList = new ArrayList<>();
-//        portfolioDto.getTechStackList().forEach(element -> {
-//            TechStack techStack = modelMapper.map(element, TechStack.class);
-//            techStack.setPortfolio(portfolio);
-//            techStackList.add(techStack);
-//        });
-//        techStackRepository.saveAll(techStackList);
-//
-//        teamRepository.delTeam(portfolio.getId());
-//        List<Team> teamList = new ArrayList<>();
-//        portfolioDto.getTeamList().forEach(element -> {
-//            Team team = modelMapper.map(element, Team.class);
-//            team.setPortfolio(portfolio);
-//            teamList.add(team);
-//        });
-//        teamRepository.saveAll(teamList);
-//
-//        fileRepository.delFile(portfolio.getId());
-//        if(files != null && files.length > 0) {
-//            //파일 저장
-//
-////           List<File> fileList = new ArrayList<>();
-//            File file;
-//            for(int i = 0; i < files.length; i++) {
-//                file = new File();
-////        	   portfolioService.filesave(rootPath, files[i].getOriginalFilename(), files[i].getBytes());
-//                UUID uuid = UUID.randomUUID();
-//
-//                String imgName = uuid + files[i].getOriginalFilename();
-//                String fileDir = rootPath + "/src/main/resources/static/data";
-//                String fileUploadFullUrl = fileDir + "/" + imgName;
-//
-//                String filepath = "/data/" + imgName;
-//                FileOutputStream fos;
-//                try {
-//                    fos = new FileOutputStream(fileUploadFullUrl);
-//                    fos.write(files[i].getBytes());
-//                    fos.close();
-//                } catch (Exception e) {
-//                    System.out.println("에러");
-//                }
-//
-//                file.setPortfolio(portfolio);
-//                file.setPath(filepath);
-//                file.setUuid(uuid.toString());
-//                file.setFileName(files[i].getOriginalFilename());
-//                fileRepository.save(file);
-//            }
-//        }
+        techStackRepository.delTechStack(portfolio.getId());
+        List<TechStack> techStackList = new ArrayList<>();
+        portfolioDto.getTechStackList().forEach(element -> {
+            TechStack techStack = modelMapper.map(element, TechStack.class);
+            techStack.setPortfolio(portfolio);
+            techStackList.add(techStack);
+        });
+        techStackRepository.saveAll(techStackList);
+
+        teamRepository.delTeam(portfolio.getId());
+        List<Team> teamList = new ArrayList<>();
+        portfolioDto.getTeamList().forEach(element -> {
+            Team team = modelMapper.map(element, Team.class);
+            team.setPortfolio(portfolio);
+            teamList.add(team);
+        });
+        teamRepository.saveAll(teamList);
+
+        fileRepository.delFile(portfolio.getId());
+        if(files != null && files.length > 0) {
+            //파일 저장
+
+//           List<File> fileList = new ArrayList<>();
+            File file;
+            for(int i = 0; i < files.length; i++) {
+                file = new File();
+//        	   portfolioService.filesave(rootPath, files[i].getOriginalFilename(), files[i].getBytes());
+                UUID uuid = UUID.randomUUID();
+
+                String imgName = uuid + files[i].getOriginalFilename();
+                String fileDir = rootPath + "/src/main/resources/static/data";
+                String fileUploadFullUrl = fileDir + "/" + imgName;
+
+                String filepath = "/data/" + imgName;
+                FileOutputStream fos;
+                try {
+                    fos = new FileOutputStream(fileUploadFullUrl);
+                    fos.write(files[i].getBytes());
+                    fos.close();
+                } catch (Exception e) {
+                    System.out.println("에러");
+                }
+
+                file.setPortfolio(portfolio);
+                file.setPath(filepath);
+                file.setUuid(uuid.toString());
+                file.setFileName(files[i].getOriginalFilename());
+                fileRepository.save(file);
+            }
+        }
     }
 }
