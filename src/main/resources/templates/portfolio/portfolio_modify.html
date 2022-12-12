@@ -404,14 +404,14 @@
                         formData.append("file", document.getElementById('file').files[index]);
                     }
                     formData.append("portfolio", new Blob([JSON.stringify(portfolio)], {type: "application/json"}));
-
+					aleat(formData.get);
                     $.ajax({
                         url: "/user/portfolio/modify",
                         data: formData,
                         processData: false,
                         contentType: false,
                         enctype: 'multipart/form-data',
-                        type: "POST",
+                        type: 'POST',
                         success: function () {
                             window.location = "/portfolio/detail?p=" + [[${portfolio.id}]];
                             alert("포트폴리오 등록에 성공했습니다.");

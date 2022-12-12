@@ -59,7 +59,7 @@ public class PortfolioController {
         return readme;
     }
 
-    @GetMapping("/user/portfolio/modify")
+    @GetMapping("/user/portfolio/register/modify")
     public String modifyPortfolio(@RequestParam Long pId, Model model) {
         PortfolioDto.Response portfolioDetail = portfolioService.getPortfolioDetail(pId);
         model.addAttribute("portfolio", portfolioDetail);
@@ -70,8 +70,9 @@ public class PortfolioController {
     @ResponseBody
     public void modifyPortfolio(@RequestPart(value = "portfolio") PortfolioDto.Response portfolioDto,
                                 @RequestPart(value = "file", required = false) MultipartFile[] files) {
-
         log.info(portfolioDto.toString());
+        System.out.println("//////////////////////////////////////////////////");
+        System.out.println(portfolioDto.toString());
         portfolioService.modifyPortfolio(portfolioDto, files);
     }
 
