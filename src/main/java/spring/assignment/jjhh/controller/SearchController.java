@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import spring.assignment.jjhh.dto.PortfolioDto;
 import spring.assignment.jjhh.service.PortfolioService;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 @Controller
@@ -22,8 +24,8 @@ public class SearchController {
     private final PortfolioService portfolioService;
 
     @GetMapping("/search")
-    public String searchPortfolio(Model model, @RequestParam String s, @PageableDefault(size = 4, sort="views",direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<PortfolioDto.Preview> searchedPortfolio = portfolioService.getSearchedPortfolioPreview(s, pageable);
+    public String searchPortfolio(Model model, @RequestParam String s, @PageableDefault(size = 4, sort="views",direction = Sort.Direction.DESC) Pageable pageable) throws UnsupportedEncodingException {
+        Page<PortfolioDto.Preview> searchedPortfolio = portfolioService.getSearchedPortfolioPreview(URLDecoder.decode(s, "UTF-8"), pageable);
         if (!searchedPortfolio.isEmpty()) {
             int startPage = Math.max(1, searchedPortfolio.getPageable().getPageNumber() - 4);
             int endPage = Math.min(searchedPortfolio.getTotalPages(), searchedPortfolio.getPageable().getPageNumber() + 4);

@@ -39,7 +39,6 @@ public class Portfolio extends BaseEntity implements Serializable {
     @Column(length = 3, nullable = false)
     private String disclosure; //공개 여부
 
-    @Column(nullable = false)
     private Integer views;
 
     @ManyToOne(fetch = FetchType.LAZY)
