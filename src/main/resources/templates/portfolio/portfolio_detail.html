@@ -220,7 +220,7 @@
                                                     editor.enableReadOnlyMode('introduce');
                                                     const toolbarElement = editor.ui.view.toolbar.element;
                                                     toolbarElement.style.display = 'none';
-
+													
                                                     $.ajax({
                                                         url: "/portfolio/detail/readme/" + [[${portfolio.getId()}]],
                                                         dataType: "text",

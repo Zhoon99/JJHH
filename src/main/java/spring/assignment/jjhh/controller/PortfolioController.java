@@ -59,7 +59,7 @@ public class PortfolioController {
         return readme;
     }
 
-    @GetMapping("/user/portfolio/modify")
+    @GetMapping("/user/portfolio/register/modify")
     public String modifyPortfolio(@RequestParam Long pId, Model model) {
         PortfolioDto.Response portfolioDetail = portfolioService.getPortfolioDetail(pId);
         model.addAttribute("portfolio", portfolioDetail);
@@ -69,6 +69,7 @@ public class PortfolioController {
     @PostMapping("/user/portfolio/modify")
     @ResponseBody
     public void modifyPortfolio(@RequestPart(value = "portfolio") PortfolioDto.Response portfolioDto,
+
                                 @RequestPart(value = "file", required = false) MultipartFile[] files,
                                 Authentication authentication) {
 
